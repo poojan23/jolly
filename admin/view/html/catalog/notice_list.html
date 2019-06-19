@@ -1,5 +1,6 @@
 <?php echo $header; ?>
 <?php echo $nav; ?>
+
 <!-- Content Wrapper. Contains page content -->
 <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -55,11 +56,13 @@
                 <?php endif; ?>
 
                 <div class="clearfix">
+                     <?php if($user_group =='Administrator') : ?>
                     <a href="<?php echo $add; ?>" data-toggle="tooltip" title="<?php echo $button_add; ?>"
                         class="btn btn-primary btn-bold"><i class="fa fa-plus"></i></a>
                     <button type="button" data-toggle="tooltip" title="<?php echo $button_delete; ?>"
-                        class="btn btn-danger btn-bold" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-team-group').submit() :
+                        class="btn btn-danger btn-bold" onclick="confirm('<?php echo $text_confirm; ?>') ? $('#form-notice-group').submit() :
                         false;"><i class="fa fa-trash-alt"></i></button>
+                        <?php endif; ?>
                     <div class="float-right tableTools-container"></div>
                 </div>
             </div>
@@ -74,65 +77,46 @@
                     <!-- /.card-header -->
                     <div class="card-body">
                         <form action="<?php echo $delete; ?>" method="POST" enctype="multipart/form-data"
-                            id="form-team-group">
+                            id="form-notice-group">
                             <div class="table-responsive">
-                                <table id="table_team" class="table table-bordered table-hover">
+                                <table id="table_notice" class="table table-bordered table-hover">
                                     <thead>
                                         <tr>
                                             <th style="width: 1px;" class="text-center no-sort"><input type="checkbox"
                                                     onclick="$('input[name*=\'selected\']').trigger('click');" /></th>
-                                            <th>
-                                                <?php echo $column_club; ?>
-                                            </th>
-                                            <th>
-                                                <?php echo $column_name; ?>
-                                            </th>
-                                            <th>
-                                                <?php echo $column_position; ?>
-                                            </th>
-                                            <th>
-                                                <?php echo $column_mobile; ?>
-                                            </th>
-                                            <th>
-                                                <?php echo $column_email; ?>
-                                            </th>
-                                            <th class="no-sort">
-                                                <?php echo $column_action; ?>
-                                            </th>
+                                            <th><?php echo $column_date; ?></th>
+                                            <th><?php echo $column_name; ?></th>
+                                            <th><?php echo $column_filename; ?></th>
+                                            <th><?php echo $column_action; ?></th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if($teams) : ?>
-                                        <?php foreach($teams as $team) : ?>
+                                        <?php if($notices) : ?>
+                                        <?php foreach($notices as $notice) : ?>
                                         <tr>
                                             <td class="text-center">
-                                                <?php if(in_array($team['team_id'], $selected)) : ?>
+                                                <?php if(in_array($notice['notice_id'], $selected)) : ?>
                                                 <input type="checkbox" name="selected[]"
-                                                    value="<?php echo $team['team_id']; ?>"
+                                                    value="<?php echo $notice['notice_id']; ?>"
                                                     checked="checked" />
                                                 <?php else : ?>
                                                 <input type="checkbox" name="selected[]"
-                                                    value="<?php echo $team['team_id']; ?>" />
+                                                    value="<?php echo $notice['notice_id']; ?>" />
                                                 <?php endif; ?>
                                             </td>
                                             <td class="text-left">
-                                                <?php echo $team['club_name']; ?>
+                                                <?php echo $notice['date']; ?>
                                             </td>
                                             <td class="text-left">
-                                                <?php echo $team['name']; ?>
+                                                <?php echo $notice['title']; ?>
                                             </td>
                                             <td class="text-left">
-                                                <?php echo $team['position']; ?>
+                                                <?php echo $notice['filename']; ?>
                                             </td>
                                             <td class="text-left">
-                                                <?php echo $team['mobile']; ?>
-                                            </td>
-                                            <td class="text-left">
-                                                <?php echo $team['email']; ?>
-                                            </td>
-                                            <td class="text-left"><a href="<?php echo $team['edit']; ?>"
-                                                    data-toggle="tooltip" title="<?php echo $button_edit; ?>"
-                                                    class="btn btn-primary"><i class="fa fa-pencil-alt"></i></a>
+                                                <a href="<?php echo $notice['edit']; ?>"
+                                                   data-toggle="tooltip" title="<?php echo $button_edit; ?>"
+                                                   class="btn btn-primary"><i class="fa fa-pencil-alt"></i></a>
                                             </td>
                                         </tr>
                                         <?php endforeach; ?>
@@ -162,7 +146,7 @@
 <?php echo $footer; ?>
 <script type="text/javascript">
     $(function () {
-        var table = $('#table_team').DataTable({
+        var table = $('#table_notice').DataTable({
             "order": [
                 [1, 'asc']
             ],
@@ -201,7 +185,7 @@
             },
             {
                 "extend": "collection",
-                "text": "<i class='fa fa-download'></i> <span hidden><?php echo $text_dt_file_export; ?></span>",
+                "text": "<i class='fa fa-notice'></i> <span hidden><?php echo $text_dt_file_export; ?></span>",
                 "className": "dt-button btn-success",
                 "init": function (api, node, config) {
                     $(node).removeClass('btn-default');
@@ -267,7 +251,7 @@
             });
         }, 500);
 
-        $(document).on('click', '#table_team .dropdown-toggle', function (e) {
+        $(document).on('click', '#table_notice .dropdown-toggle', function (e) {
             e.stopImmediatePropagation();
             e.stopPropagation();
             e.preventDefault();
