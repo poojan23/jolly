@@ -77,15 +77,15 @@
 
                             <div class="form-group row required">
                                 <label for="input-group-name" class="col-sm-2 col-form-label">
-                                    <?php echo $entry_group_name; ?></label>
+                                    <?php echo $entry_name; ?></label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" name="group_name" value="<?php echo $group_name; ?>"
-                                           placeholder="<?php echo $entry_group_name; ?>" class="form-control"
+                                    <input type="text" name="name" value="<?php echo $name; ?>"
+                                           placeholder="<?php echo $entry_name; ?>" class="form-control"
                                            id="input-group-name" />
-                                    <?php if($group_name_err) : ?>
+                                    <?php if($name_err) : ?>
                                     <span class="invalid-tooltip">
-                                        <?php echo $group_name_err; ?></span>
+                                        <?php echo $name_err; ?></span>
                                     <?php endif; ?>
                                 </div>
                             </div>
@@ -95,7 +95,7 @@
                                     <?php echo $entry_keyword; ?></label>
 
                                 <div class="col-sm-10">
-                                    <input type="text" name="information_seo_url" value="<?php echo $information_seo; ?>"
+                                    <input type="text" name="event_seo_url" value="<?php echo $event_seo; ?>"
                                            placeholder="<?php echo $entry_keyword; ?>" class="form-control"
                                            id="input-keyword" />
                                 </div>

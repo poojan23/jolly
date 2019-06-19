@@ -146,7 +146,7 @@
                 clearInterval(timer);
     
                 $.ajax({
-                    url: 'index.php?url=catalog/gml/upload&user_token=<?php echo $user_token; ?>',
+                    url: 'index.php?url=catalog/download/upload&user_token=<?php echo $user_token; ?>',
                     type: 'post',
                     dataType: 'json',
                     data: new FormData($('#form-upload')[0]),

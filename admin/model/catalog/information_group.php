@@ -4,7 +4,7 @@ class ModelCatalogInformationGroup extends PT_Model
 {
     public function addInformationGroup($data)
     {
-        $query = $this->db->query("INSERT INTO " . DB_PREFIX . "information_group SET  group_name = '" . $this->db->escape((string)$data['group_name']) . "',information_id = '" . (int)$data['information_id'] . "', sort_order = '" . (int)$data['sort_order'] . "', status = '" . (isset($data['status']) ? (int)$data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
+        $query = $this->db->query("INSERT INTO " . DB_PREFIX . "information_group SET  group_name = '" . $this->db->escape((string)$data['group_name']) . "', sort_order = '" . (int)$data['sort_order'] . "', status = '" . (isset($data['status']) ? (int)$data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
         $information_group_id = $this->db->lastInsertId();
         # SEO URL
         if (isset($data['information_seo_url'])) {

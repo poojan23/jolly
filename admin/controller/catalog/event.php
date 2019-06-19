@@ -1,70 +1,71 @@
 <?php
 
-class ControllerCatalogInformationGroup extends PT_Controller {
+class ControllerCatalogEvent extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('catalog/information_group');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/information_group');
+        $this->load->model('catalog/event');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('catalog/information_group');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/information_group');
+        $this->load->model('catalog/event');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_information_group->addInformationGroup($this->request->post);
+            
+            $this->model_catalog_event->addEvent($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/information_group', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('catalog/information_group');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/information_group');
+        $this->load->model('catalog/event');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_information_group->editInformationGroup($this->request->get['information_group_id'], $this->request->post);
+            $this->model_catalog_event->editEvent($this->request->get['event_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/information_group', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('catalog/information_group');
+        $this->load->language('catalog/event');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/information_group');
-       
+        $this->load->model('catalog/event');
+
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $information_group_id) {
-                $this->model_catalog_information_group->deleteInformationGroup($information_group_id);
+            foreach ($this->request->post['selected'] as $event_id) {
+                $this->model_catalog_event->deleteEvent($event_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/information_group', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getList();
@@ -99,23 +100,23 @@ class ControllerCatalogInformationGroup extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/information_group', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('catalog/information_group/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('catalog/information_group/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('catalog/event/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['information_groups'] = array();
+        $data['events'] = array();
 
-        $results = $this->model_catalog_information_group->getInformationGroups();
-
+        $results = $this->model_catalog_event->getEvents();
+//        print_r($results);exit;
         foreach ($results as $result) {
-            $data['information_groups'][] = array(
-                'information_group_id' => $result['information_group_id'],
-                'group_name' => $result['group_name'],
+            $data['events'][] = array(
+                'event_id' => $result['event_id'],
+                'name' => $result['name'],
                 'sort_order' => $result['sort_order'],
-                'edit' => $this->url->link('catalog/information_group/edit', 'user_token=' . $this->session->data['user_token'] . '&information_group_id=' . $result['information_group_id']),
-                'delete' => $this->url->link('catalog/information_group/delete', 'user_token=' . $this->session->data['user_token'] . '&information_group_id=' . $result['information_group_id'])
+                'edit' => $this->url->link('catalog/event/edit', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id']),
+                'delete' => $this->url->link('catalog/event/delete', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $result['event_id'])
             );
         }
 
@@ -143,7 +144,7 @@ class ControllerCatalogInformationGroup extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/information_group_list', $data));
+        $this->response->setOutput($this->load->view('catalog/event_list', $data));
     }
 
     protected function getForm() {
@@ -152,7 +153,7 @@ class ControllerCatalogInformationGroup extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
 
-        $data['text_form'] = !isset($this->request->get['information_group_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['event_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -160,16 +161,22 @@ class ControllerCatalogInformationGroup extends PT_Controller {
             $data['warning_err'] = '';
         }
 
-        if (isset($this->error['group_name'])) {
-            $data['group_name_err'] = $this->error['group_name'];
+        if (isset($this->error['event_name'])) {
+            $data['name_err'] = $this->error['event_name'];
         } else {
-            $data['group_name_err'] = array();
+            $data['name_err'] = array();
         }
 
-        if (isset($this->error['url'])) {
-            $data['url_err'] = $this->error['url'];
+        if (isset($this->error['description'])) {
+            $data['description_err'] = $this->error['description'];
         } else {
-            $data['url_err'] = array();
+            $data['description_err'] = array();
+        }
+        
+        if (isset($this->error['keyword'])) {
+            $data['keyword_err'] = $this->error['keyword'];
+        } else {
+            $data['keyword_err'] = '';
         }
 
         $data['breadcrumbs'] = array();
@@ -181,90 +188,142 @@ class ControllerCatalogInformationGroup extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/information_group', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['information_group_id'])) {
-            $data['action'] = $this->url->link('catalog/information_group/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['event_id'])) {
+            $data['action'] = $this->url->link('catalog/event/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('catalog/information_group/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('catalog/event/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('catalog/information_group/edit', 'user_token=' . $this->session->data['user_token'] . '&information_group_id=' . $this->request->get['information_group_id']);
+            $data['action'] = $this->url->link('catalog/event/edit', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $this->request->get['event_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('catalog/information_group/edit', 'user_token=' . $this->session->data['user_token'] . '&information_group_id=' . $this->request->get['information_group_id'])
+                'href' => $this->url->link('catalog/event/edit', 'user_token=' . $this->session->data['user_token'] . '&event_id=' . $this->request->get['event_id'])
             );
         }
 
-        $data['cancel'] = $this->url->link('catalog/information_group', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['information_group_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $information_group_info = $this->model_catalog_information_group->getInformationGroup($this->request->get['information_group_id']);
+        if (isset($this->request->get['event_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $event_info = $this->model_catalog_event->getEvent($this->request->get['event_id']);
         }
-      
+
         $data['user_token'] = $this->session->data['user_token'];
 
         $this->load->model('localisation/language');
 
-        if (isset($this->request->post['group_name'])) {
-            $data['group_name'] = $this->request->post['group_name'];
-        } elseif (!empty($information_group_info)) {
-            $data['group_name'] = $information_group_info['group_name'];
+        $data['languages'] = $this->model_localisation_language->getLanguages();
+
+        if (isset($this->request->post['event_group_id'])) {
+            $data['event_group_id'] = $this->request->post['event_group_id'];
+        } elseif (!empty($event_info)) {
+            $data['event_group_id'] = $event_info['event_group_id'];
         } else {
-            $data['group_name'] = '';
+            $data['event_group_id'] = '';
         }
 
-        if (isset($this->request->post['information_id'])) {
-            $data['information_id'] = $this->request->post['information_id'];
-        } elseif (!empty($information_group_info)) {
-            $data['information_id'] = $information_group_info['information_id'];
+        $this->load->model('catalog/event_group');
+
+        $data['event_groups'] = $this->model_catalog_event_group->getEventGroups();
+       
+        if (isset($this->request->post['event_name'])) {
+            $data['event_name'] = $this->request->post['event_name'];
+        } elseif (!empty($event_info)) {
+            $data['event_name'] = $event_info['name'];
         } else {
-            $data['information_id'] = '';
+            $data['event_name'] = '';
+        }
+        
+        if (isset($this->request->post['description'])) {
+            $data['description'] = $this->request->post['description'];
+        } elseif (!empty($event_info)) {
+            $data['description'] = $event_info['description'];
+        } else {
+            $data['description'] = '';
+        }
+
+        if (isset($this->request->post['image'])) {
+            $data['image'] = $this->request->post['image'];
+        } elseif (!empty($event_info)) {
+            $data['image'] = $event_info['image'];
+        } else {
+            $data['image'] = '';
+        }
+
+        $this->load->model('tool/image');
+
+        $data['placeholder'] = $this->model_tool_image->resize('no-image.png', 100, 100);
+
+        if (is_file(DIR_IMAGE . html_entity_decode($data['image'], ENT_QUOTES, 'UTF-8'))) {
+            $data['thumb'] = $this->model_tool_image->resize(html_entity_decode($data['image'], ENT_QUOTES, 'UTF-8'), 100, 100);
+        } else {
+            $data['thumb'] = $data['placeholder'];
+        }
+        
+        // Images
+        if (isset($this->request->post['event_image'])) {
+            $event_images = $this->request->post['event_image'];
+        } elseif (!empty($event_info)) {
+            $event_images = $this->model_catalog_event->getEventImages($this->request->get['event_id']);
+        } else {
+            $event_images = array();
+        }
+
+        $data['event_images'] = array();
+
+        foreach ($event_images as $event_image) {
+            if (is_file(DIR_IMAGE . html_entity_decode($event_image['image'], ENT_QUOTES, 'UTF-8'))) {
+                $image = $event_image['image'];
+                $thumb = $event_image['image'];
+            } else {
+                $image = '';
+                $thumb = 'no_image.png';
+            }
+
+            $data['event_images'][] = array(
+                'image' => $image,
+                'thumb' => $this->model_tool_image->resize(html_entity_decode($thumb, ENT_QUOTES, 'UTF-8'), 100, 100),
+                'sort_order' => $event_image['sort_order']
+            );
         }
 
         if (isset($this->request->post['sort_order'])) {
             $data['sort_order'] = $this->request->post['sort_order'];
-        } elseif (!empty($information_group_info)) {
-            $data['sort_order'] = $information_group_info['sort_order'];
+        } elseif (!empty($event_info)) {
+            $data['sort_order'] = $event_info['sort_order'];
         } else {
             $data['sort_order'] = 0;
-        }
-         if (isset($this->request->get['information_group_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $information_seo = $this->model_catalog_information_group->getInformationGroupSeoUrls($this->request->get['information_group_id']);
-        }
-       
-        if (isset($this->request->post['information_seo_url'])) {
-            $data['information_seo_url'] = $this->request->post['information_seo_url'];
-        } elseif (!empty($information_seo)) {
-            $data['information_seo'] = $information_seo['keyword'];
-        } else {
-            $data['information_seo'] = '';
         }
 
         if (isset($this->request->post['status'])) {
             $data['status'] = $this->request->post['status'];
-        } elseif (!empty($information_group_info)) {
-            $data['status'] = $information_group_info['status'];
+        } elseif (!empty($event_info)) {
+            $data['status'] = $event_info['status'];
         } else {
             $data['status'] = true;
+        }
+
+        if (isset($this->request->post['event_seo_url'])) {
+            $data['event_seo_url'] = $this->request->post['event_seo_url'];
+        } elseif (!empty($event_info)) {
+            $data['event_seo_url'] = $this->model_catalog_event->getEventSeoUrls($this->request->get['event_id']);
+        } else {
+            $data['event_seo_url'] = array();
         }
 
         $data['header'] = $this->load->controller('common/header');
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/information_group_form', $data));
+        $this->response->setOutput($this->load->view('catalog/event_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'catalog/information_group')) {
+        if (!$this->user->hasPermission('modify', 'catalog/event')) {
             $this->error['warning'] = $this->language->get('error_permission');
-        }
-        
-        if ((utf8_strlen(trim($this->request->post['group_name'])) < 1) || (utf8_strlen(trim($this->request->post['group_name'])) > 32)) {
-            $this->error['group_name'] = $this->language->get('error_group_name');
         }
 
         if ($this->error && !isset($this->error['warning'])) {
@@ -275,7 +334,7 @@ class ControllerCatalogInformationGroup extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'catalog/information_group')) {
+        if (!$this->user->hasPermission('delete', 'catalog/event')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -320,21 +379,13 @@ class ControllerCatalogInformationGroup extends PT_Controller {
         $json = array();
 
         if (isset($this->request->get['filter_name'])) {
-            $this->load->model('catalog/information_group');
+            $this->load->model('catalog/event');
 
-            $filter_data = array(
-                'filter_name' => $this->request->get['filter_name'],
-                'sort' => 'name',
-                'order' => 'ASC',
-                'start' => 0,
-                'limit' => 5
-            );
-
-            $results = $this->model_catalog_information_group->getInformations($filter_data);
-
+            $results = $this->model_catalog_event->getEvents();
+          
             foreach ($results as $result) {
                 $json[] = array(
-                    'information_group_id' => $result['information_group_id'],
+                    'event_id' => $result['event_id'],
                     'title' => strip_tags(html_entity_decode($result['title'], ENT_QUOTES, 'UTF-8'))
                 );
             }

@@ -1,70 +1,70 @@
 <?php
 
-class ControllerCatalogGml extends PT_Controller {
+class ControllerCatalogDownload extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('catalog/gml');
+        $this->load->language('catalog/download');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/gml');
+        $this->load->model('catalog/download');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('catalog/gml');
+        $this->load->language('catalog/download');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/gml');
+        $this->load->model('catalog/download');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_gml->addGml($this->request->post);
+            $this->model_catalog_download->addDownload($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('catalog/gml');
+        $this->load->language('catalog/download');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/gml');
+        $this->load->model('catalog/download');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_catalog_gml->editGml($this->request->get['gml_id'], $this->request->post);
+            $this->model_catalog_download->editDownload($this->request->get['download_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('catalog/gml');
+        $this->load->language('catalog/download');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('catalog/gml');
+        $this->load->model('catalog/download');
 
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $gml_id) {
-                $this->model_catalog_gml->deleteGml($gml_id);
+            foreach ($this->request->post['selected'] as $download_id) {
+                $this->model_catalog_download->deleteDownload($download_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token']));
+            $this->response->redirect($this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getList();
@@ -99,22 +99,22 @@ class ControllerCatalogGml extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('catalog/gml/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('catalog/gml/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('catalog/download/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('catalog/download/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['gmls'] = array();
+        $data['downloads'] = array();
 
-        $results = $this->model_catalog_gml->getGmls();
+        $results = $this->model_catalog_download->getDownloads();
 
         foreach ($results as $result) {
-            $data['gmls'][] = array(
-                'gml_id' => $result['gml_id'],
+            $data['downloads'][] = array(
+                'download_id' => $result['download_id'],
                 'name' => $result['name'],
                 'filename' => $result['filename'],
-                'edit' => $this->url->link('catalog/gml/edit', 'user_token=' . $this->session->data['user_token'] . '&gml_id=' . $result['gml_id'])
+                'edit' => $this->url->link('catalog/download/edit', 'user_token=' . $this->session->data['user_token'] . '&download_id=' . $result['download_id'])
             );
         }
 
@@ -150,7 +150,7 @@ class ControllerCatalogGml extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/gml_list', $data));
+        $this->response->setOutput($this->load->view('catalog/download_list', $data));
     }
 
     protected function getForm() {
@@ -159,7 +159,7 @@ class ControllerCatalogGml extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
         $data['user_token'] = $this->session->data['user_token'];
-        $data['text_form'] = !isset($this->request->get['gml_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['download_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -194,49 +194,49 @@ class ControllerCatalogGml extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['gml_id'])) {
-            $data['action'] = $this->url->link('catalog/gml/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['download_id'])) {
+            $data['action'] = $this->url->link('catalog/download/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('catalog/gml/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('catalog/download/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('catalog/gml/edit', 'user_token=' . $this->session->data['user_token'] . '&gml_id=' . $this->request->get['gml_id']);
+            $data['action'] = $this->url->link('catalog/download/edit', 'user_token=' . $this->session->data['user_token'] . '&download_id=' . $this->request->get['download_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('catalog/gml/edit', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('catalog/download/edit', 'user_token=' . $this->session->data['user_token'])
             );
         }
 
-        $data['cancel'] = $this->url->link('catalog/gml', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('catalog/download', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['gml_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $gml_info = $this->model_catalog_gml->getGml($this->request->get['gml_id']);
+        if (isset($this->request->get['download_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $download_info = $this->model_catalog_download->getDownload($this->request->get['download_id']);
         }
 
         if (isset($this->request->post['filename'])) {
             $data['filename'] = $this->request->post['filename'];
-        } elseif (!empty($gml_info)) {
-            $data['filename'] = $gml_info['filename'];
+        } elseif (!empty($download_info)) {
+            $data['filename'] = $download_info['filename'];
         } else {
             $data['filename'] = '';
         }
 
         if (isset($this->request->post['name'])) {
             $data['name'] = $this->request->post['name'];
-        } elseif (!empty($gml_info)) {
-            $data['name'] = $gml_info['name'];
+        } elseif (!empty($download_info)) {
+            $data['name'] = $download_info['name'];
         } else {
             $data['name'] = '';
         }
 
         if (isset($this->request->post['mask'])) {
             $data['mask'] = $this->request->post['mask'];
-        } elseif (!empty($gml_info)) {
-            $data['mask'] = $gml_info['mask'];
+        } elseif (!empty($download_info)) {
+            $data['mask'] = $download_info['mask'];
         } else {
             $data['mask'] = '';
         }
@@ -245,15 +245,15 @@ class ControllerCatalogGml extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('catalog/gml_form', $data));
+        $this->response->setOutput($this->load->view('catalog/download_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'catalog/gml')) {
+        if (!$this->user->hasPermission('modify', 'catalog/download')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        foreach ($this->request->post['gml_description'] as $language_id => $value) {
+        foreach ($this->request->post['download_description'] as $language_id => $value) {
             if ((utf8_strlen($value['name']) < 3) || (utf8_strlen($value['name']) > 64)) {
                 $this->error['name'][$language_id] = $this->language->get('error_name');
             }
@@ -275,12 +275,12 @@ class ControllerCatalogGml extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'catalog/gml')) {
+        if (!$this->user->hasPermission('delete', 'catalog/download')) {
             $this->error['warning'] = $this->language->get('error_delete');
         }
 
-        foreach ($this->request->post['selected'] as $gml_id) {
-            if ($this->user->getId() == $gml_id) {
+        foreach ($this->request->post['selected'] as $download_id) {
+            if ($this->user->getId() == $download_id) {
                 $this->error['warning'] = $this->language->get('error_account');
             }
         }
@@ -289,12 +289,12 @@ class ControllerCatalogGml extends PT_Controller {
     }
 
     public function upload() {
-        $this->load->language('catalog/gml');
+        $this->load->language('catalog/download');
 
         $json = array();
 
         // Check user has permission
-        if (!$this->user->hasPermission('modify', 'catalog/gml')) {
+        if (!$this->user->hasPermission('modify', 'catalog/download')) {
             $json['error'] = $this->language->get('error_permission');
         }
 
