@@ -106,15 +106,15 @@
                                     </div>
                                 </div>
                                 <hr>
-<!--                                <ul class="nav nav-tabs" id="language">
+                                <ul class="nav nav-tabs" id="language">
                                     <?php foreach($languages as $language) : ?>
                                     <li><a href="#language<?php echo $language['language_id']; ?>" data-toggle="tab"><?php echo $language['name']; ?></a></li>
                                     <?php endforeach; ?>
-                                </ul>-->
+                                </ul>
                                 <div class="tab-content">
                                     <?php $image_row = 0; ?>
                                     <?php foreach($languages as $language) : ?>
-                                    <div class="tab-pane active" id="language<?php echo $language['language_id']; ?>">
+                                    <div class="tab-pane" id="language<?php echo $language['language_id']; ?>">
                                         <div class="table-responsive">
                                             <table id="images<?php echo $language['language_id']; ?>" class="table table-striped table-bordered table-hover">
                                                 <thead>

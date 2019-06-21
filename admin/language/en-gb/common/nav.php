@@ -68,4 +68,5 @@ $_['text_zone']                 = 'States / Provinces';
 $_['text_event']                = 'Event';
 $_['text_event_group']          = 'Event Group';
 $_['text_notice']               = 'Notice';
+$_['text_sport']                = 'Sports';
 

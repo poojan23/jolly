@@ -80,6 +80,27 @@ class ControllerCommonNav extends PT_Controller
                 );
             }
 
+            # Sport
+            $sport = array();
+            
+            if ($this->user->hasPermission('access', 'sport/sport')) {
+                $sport[] = array(
+                    'name'      => $this->language->get('text_sport'),
+                    'href'      => $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+   
+            if ($sport) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_sport'),
+                    'href'      => '',
+                    'children'  => $sport
+                );
+            }
+            
             # Design
             $design = array();
             
