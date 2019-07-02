@@ -32,7 +32,7 @@ $_['help_mask']         = 'It is recommended that the filename and the mask are 
 // Error
 $_['error_warning']     = 'Warning: Please check the form carefully for errors!';
 $_['error_permission']  = 'Warning: You do not have permission to modify notices!';
-$_['error_name']        = 'Notice Name must be between 3 and 64 characters!';
+$_['error_title']       = 'Notice Title must be between 3 and 64 characters!';
 $_['error_exists_name'] = 'Notice Name already exists!';
 $_['error_upload']      = 'Upload required!';
 $_['error_filename']    = 'Filename must be between 3 and 128 characters!';

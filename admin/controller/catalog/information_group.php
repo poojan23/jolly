@@ -22,6 +22,7 @@ class ControllerCatalogInformationGroup extends PT_Controller {
         $this->load->model('catalog/information_group');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+//            print_r($this->request->post);exit;
             $this->model_catalog_information_group->addInformationGroup($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
@@ -238,9 +239,9 @@ class ControllerCatalogInformationGroup extends PT_Controller {
         if (isset($this->request->post['information_seo_url'])) {
             $data['information_seo_url'] = $this->request->post['information_seo_url'];
         } elseif (!empty($information_seo)) {
-            $data['information_seo'] = $information_seo['keyword'];
+            $data['information_seo_url'] = $information_seo['keyword'];
         } else {
-            $data['information_seo'] = '';
+            $data['information_seo_url'] = '';
         }
 
         if (isset($this->request->post['status'])) {

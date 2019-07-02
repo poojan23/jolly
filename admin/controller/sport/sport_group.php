@@ -22,11 +22,12 @@ class ControllerSportSportGroup extends PT_Controller {
         $this->load->model('sport/sport_group');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_sport_sport->addSportGroup($this->request->post);
+//            print_r($this->request->post);exit;
+            $this->model_sport_sport_group->addSportGroup($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
@@ -40,11 +41,11 @@ class ControllerSportSportGroup extends PT_Controller {
         $this->load->model('sport/sport_group');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_sport_sport->editSportGroup($this->request->get['banner_id'], $this->request->post);
+            $this->model_sport_sport_group->editSportGroup($this->request->get['sport_group_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getForm();
@@ -56,15 +57,15 @@ class ControllerSportSportGroup extends PT_Controller {
         $this->document->setTitle($this->language->get('heading_title'));
 
         $this->load->model('sport/sport_group');
-
+       
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $banner_id) {
-                $this->model_sport_sport->deleteSportGroup($banner_id);
+            foreach ($this->request->post['selected'] as $sport_group_id) {
+                $this->model_sport_sport_group->deleteSportGroup($sport_group_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token']));
         }
 
         $this->getList();
@@ -105,17 +106,17 @@ class ControllerSportSportGroup extends PT_Controller {
         $data['add'] = $this->url->link('sport/sport_group/add', 'user_token=' . $this->session->data['user_token']);
         $data['delete'] = $this->url->link('sport/sport_group/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['banners'] = array();
+        $data['sport_groups'] = array();
 
-        $results = $this->model_sport_sport->getSportGroups();
-       
+        $results = $this->model_sport_sport_group->getSportGroups();
+
         foreach ($results as $result) {
-            $data['banners'][] = array(
-                'banner_id' => $result['banner_id'],
-                'name' => $result['name'],
-                'status' => $result['status'],
-                'edit' => $this->url->link('sport/sport_group/edit', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $result['banner_id']),
-                'delete' => $this->url->link('sport/sport_group/delete', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $result['banner_id'])
+            $data['sport_groups'][] = array(
+                'sport_group_id' => $result['sport_group_id'],
+                'group_name' => $result['name'],
+                'sort_order' => $result['sort_order'],
+                'edit' => $this->url->link('sport/sport_group/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_group_id=' . $result['sport_group_id']),
+                'delete' => $this->url->link('sport/sport_group/delete', 'user_token=' . $this->session->data['user_token'] . '&sport_group_id=' . $result['sport_group_id'])
             );
         }
 
@@ -152,7 +153,7 @@ class ControllerSportSportGroup extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
 
-        $data['text_form'] = !isset($this->request->get['banner_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['sport_group_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -160,22 +161,16 @@ class ControllerSportSportGroup extends PT_Controller {
             $data['warning_err'] = '';
         }
 
-        if (isset($this->error['name'])) {
-            $data['error_name'] = $this->error['name'];
+        if (isset($this->error['group_name'])) {
+            $data['group_name_err'] = $this->error['group_name'];
         } else {
-            $data['error_name'] = '';
+            $data['group_name_err'] = array();
         }
 
-        if (isset($this->error['banner_image'])) {
-            $data['error_banner_image'] = $this->error['banner_image'];
+        if (isset($this->error['url'])) {
+            $data['url_err'] = $this->error['url'];
         } else {
-            $data['error_banner_image'] = array();
-        }
-
-        if (isset($this->error['keyword'])) {
-            $data['keyword_err'] = $this->error['keyword'];
-        } else {
-            $data['keyword_err'] = '';
+            $data['url_err'] = array();
         }
 
         $data['breadcrumbs'] = array();
@@ -190,93 +185,72 @@ class ControllerSportSportGroup extends PT_Controller {
             'href' => $this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['banner_id'])) {
+        if (!isset($this->request->get['sport_group_id'])) {
             $data['action'] = $this->url->link('sport/sport_group/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
                 'href' => $this->url->link('sport/sport_group/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('sport/sport_group/edit', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $this->request->get['banner_id']);
+            $data['action'] = $this->url->link('sport/sport_group/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_group_id=' . $this->request->get['sport_group_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('sport/sport_group/edit', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $this->request->get['banner_id'])
+                'href' => $this->url->link('sport/sport_group/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_group_id=' . $this->request->get['sport_group_id'])
             );
         }
 
         $data['cancel'] = $this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['banner_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-           $banner_info = $this->model_sport_sport->getSportGroup($this->request->get['banner_id']);
+        if (isset($this->request->get['sport_group_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $sport_group_info = $this->model_sport_sport_group->getSportGroup($this->request->get['sport_group_id']);
         }
-        
+      
         $data['user_token'] = $this->session->data['user_token'];
 
-        if (isset($this->request->post['name'])) {
-            $data['name'] = $this->request->post['name'];
-        } elseif (!empty($banner_info)) {
-            $data['name'] = $banner_info['name'];
+        $this->load->model('localisation/language');
+
+        if (isset($this->request->post['group_name'])) {
+            $data['group_name'] = $this->request->post['group_name'];
+        } elseif (!empty($sport_group_info)) {
+            $data['group_name'] = $sport_group_info['name'];
         } else {
-            $data['name'] = '';
+            $data['group_name'] = '';
         }
 
-        if (isset($this->request->post['status'])) {
-            $data['status'] = $this->request->post['status'];
-        } elseif (!empty($banner_info)) {
-            $data['status'] = $banner_info['status'];
-        } else {
-            $data['status'] = true;
-        }
-        
         if (isset($this->request->post['sport_group_id'])) {
             $data['sport_group_id'] = $this->request->post['sport_group_id'];
-        } elseif (!empty($event_info)) {
-            $data['sport_group_id'] = $event_info['sport_group_id'];
+        } elseif (!empty($sport_group_info)) {
+            $data['sport_group_id'] = $sport_group_info['sport_group_id'];
         } else {
             $data['sport_group_id'] = '';
         }
 
-        $this->load->model('sport/sport_group_group');
-
-        $data['sport_groups'] = $this->model_sport_sport_group->getSportGroupGroups();
-        
-        $this->load->model('localisation/language');
-
-        $data['languages'] = $this->model_localisation_language->getLanguages();
-
-        $this->load->model('tool/image');
-
-        if (isset($this->request->post['banner_image'])) {
-            $banner_images = $this->request->post['banner_image'];
-        } elseif (isset($this->request->get['banner_id'])) {
-            $banner_images = $this->model_sport_sport->getSportGroupImages($this->request->get['banner_id']);
+        if (isset($this->request->post['sort_order'])) {
+            $data['sort_order'] = $this->request->post['sort_order'];
+        } elseif (!empty($sport_group_info)) {
+            $data['sort_order'] = $sport_group_info['sort_order'];
         } else {
-            $banner_images = array();
+            $data['sort_order'] = 0;
+        }
+         if (isset($this->request->get['sport_group_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $information_seo = $this->model_sport_sport_group->getSportGroupSeoUrls($this->request->get['sport_group_id']);
+        }
+       
+        if (isset($this->request->post['sport_seo_url'])) {
+            $data['sport_seo_url'] = $this->request->post['sport_seo_url'];
+        } elseif (!empty($information_seo)) {
+            $data['sport_seo_url'] = $information_seo['keyword'];
+        } else {
+            $data['sport_seo_url'] = '';
         }
 
-        $data['banner_images'] = array();
-
-        foreach ($banner_images as $key => $value) {
-            foreach ($value as $banner_image) {
-                if (is_file(DIR_IMAGE . $banner_image['image'])) {
-                    $image = $banner_image['image'];
-                    $thumb = $banner_image['image'];
-                } else {
-                    $image = '';
-                    $thumb = 'no-image.png';
-                }
-
-                $data['banner_images'][$key][] = array(
-                    'title' => $banner_image['title'],
-                    'link' => $banner_image['link'],
-                    'image' => $image,
-                    'thumb' => $this->model_tool_image->resize($thumb, 100, 100),
-                    'sort_order' => $banner_image['sort_order']
-                );
-            }
+        if (isset($this->request->post['status'])) {
+            $data['status'] = $this->request->post['status'];
+        } elseif (!empty($sport_group_info)) {
+            $data['status'] = $sport_group_info['status'];
+        } else {
+            $data['status'] = true;
         }
-
-        $data['placeholder'] = $this->model_tool_image->resize('no-image.png', 100, 100);
 
         $data['header'] = $this->load->controller('common/header');
         $data['nav'] = $this->load->controller('common/nav');
@@ -289,19 +263,9 @@ class ControllerSportSportGroup extends PT_Controller {
         if (!$this->user->hasPermission('modify', 'sport/sport_group')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
-
-        if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 64)) {
-            $this->error['name'] = $this->language->get('error_name');
-        }
-
-        if (isset($this->request->post['banner_image'])) {
-            foreach ($this->request->post['banner_image'] as $language_id => $value) {
-                foreach ($value as $banner_image_id => $banner_image) {
-                    if ((utf8_strlen($banner_image['title']) < 2) || (utf8_strlen($banner_image['title']) > 64)) {
-                        $this->error['banner_image'][$language_id][$banner_image_id] = $this->language->get('error_title');
-                    }
-                }
-            }
+        
+        if ((utf8_strlen(trim($this->request->post['group_name'])) < 1) || (utf8_strlen(trim($this->request->post['group_name'])) > 32)) {
+            $this->error['group_name'] = $this->language->get('error_group_name');
         }
 
         if ($this->error && !isset($this->error['warning'])) {
@@ -319,40 +283,74 @@ class ControllerSportSportGroup extends PT_Controller {
         return !$this->error;
     }
 
+    public function icons() {
+        $json = array();
+
+        if (!$json) {
+            $pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s+{\s*content:\s*"(.+)";\s+}/';
+            $subject = file_get_contents('view/dist/plugins/font-awesome/css/font-awesome.css');
+
+            preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
+
+            foreach ($matches as $match) {
+                $json[] = array(
+                    'icon' => $match[1],
+                    'css' => implode(array(str_replace('\\', '&#x', $match[2]), ';'))
+                );
+            }
+
+            // $json = var_export($json, TRUE);
+            // $json = stripslashes($json);
+        }
+
+        $sort_order = array();
+
+        foreach ($json as $key => $value) {
+            $sort_order[$key] = $value;
+        }
+
+        array_multisort($sort_order, SORT_ASC, $json);
+
+        //print_r($json);
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
+    }
+
     public function autocomplete() {
         $json = array();
 
         if (isset($this->request->get['filter_name'])) {
             $this->load->model('sport/sport_group');
 
-            $filter_data = [
+            $filter_data = array(
                 'filter_name' => $this->request->get['filter_name'],
                 'sort' => 'name',
                 'order' => 'ASC',
                 'start' => 0,
                 'limit' => 5
-            ];
+            );
 
-            $results = $this->model_sport_sport->getSportGroups($filter_data);
+            $results = $this->model_sport_sport_group->getInformations($filter_data);
 
             foreach ($results as $result) {
-                $json[] = [
-                    'banner_id' => $result['banner_id'],
-                    'name' => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))
-                ];
+                $json[] = array(
+                    'sport_group_id' => $result['sport_group_id'],
+                    'title' => strip_tags(html_entity_decode($result['title'], ENT_QUOTES, 'UTF-8'))
+                );
             }
-
-            $sort_order = array();
-
-            foreach ($json as $key => $value) {
-                $sort_order[$key] = $value['name'];
-            }
-
-            array_multisort($sort_order, SORT_ASC, $json);
-
-            $this->response->addHeader('Content-Type: application/json');
-            $this->response->setOutput(json_encode($json));
         }
+
+        $sort_order = array();
+
+        foreach ($json as $key => $value) {
+            $sort_order[$key] = $value;
+        }
+
+        array_multisort($sort_order, SORT_ASC, $json);
+
+        $this->response->addHeader('Content-Type: application/json');
+        $this->response->setOutput(json_encode($json));
     }
 
 }

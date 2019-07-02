@@ -21,7 +21,7 @@ class ControllerCatalogInformation extends PT_Controller {
 
         $this->load->model('catalog/information');
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
             
             $this->model_catalog_information->addInformation($this->request->post);
 

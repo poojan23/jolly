@@ -2,114 +2,55 @@
 
 class ModelActivityActivityGroup extends PT_Model
 {
-    public function addActivityGroup($data) {
-        $this->db->query("INSERT INTO " . DB_PREFIX . "activity_group SET name = '" . $this->db->escape($data['name']) . "', status = '" . (int)$data['status'] . "'");
-
-        $banner_id = $this->db->lastInsertId();
-
-        if(isset($data['banner_image'])) {
-            foreach($data['banner_image'] as $language_id => $value) {
-                foreach($value as $banner_image) {
-                    $this->db->query("INSERT INTO " . DB_PREFIX . "banner_image SET banner_id = '" . (int)$banner_id . "', language_id = '" . (int)$language_id . "', title = '" . $this->db->escape($banner_image['title']) . "', link = '" . $this->db->escape($banner_image['link']) . "', image = '" . $this->db->escape($banner_image['image']) . "', sort_order = '" . (int)$banner_image['sort_order'] . "'");
-                }
-            }
+    public function addActivityGroup($data)
+    {
+        $query = $this->db->query("INSERT INTO " . DB_PREFIX . "activity_group SET  name = '" . $this->db->escape((string)$data['group_name']) . "', sort_order = '" . (int)$data['sort_order'] . "', status = '" . (isset($data['status']) ? (int)$data['status'] : 0) . "', date_modified = NOW(), date_added = NOW()");
+        $activity_group_id = $this->db->lastInsertId();
+        # SEO URL
+        if (isset($data['activity_seo_url'])) {
+           
+            $this->db->query("INSERT INTO " . DB_PREFIX . "seo_url SET  query = 'activity_group_id=" . (int)$activity_group_id . "', keyword = '" . $this->db->escape((string)$data['activity_seo_url']) . "', push = '" . $this->db->escape('url=activity/activity_group&activity_group_id=' . (int)$activity_group_id) . "'");
+              
         }
-
-        return $banner_id;
+        return $query;
     }
 
-    public function editActivityGroup($banner_id, $data) {
-        $this->db->query("UPDATE " . DB_PREFIX . "banner SET name = '" . $this->db->escape($data['name']) . "', status = '" . (int)$data['status'] . "' WHERE banner_id = '" . (int)$banner_id . "'");
-
-        $this->db->query("DELETE FROM " . DB_PREFIX . "banner_image WHERE banner_id = '" . (int)$banner_id . "'");
-
-        if(isset($data['banner_image'])) {
-            foreach($data['banner_image'] as $language_id => $value) {
-                foreach($value as $banner_image) {
-                    $this->db->query("INSERT INTO " . DB_PREFIX . "banner_image SET banner_id = '" . (int)$banner_id . "', language_id = '" . (int)$language_id . "', title = '" . $this->db->escape($banner_image['title']) . "', link = '" . $this->db->escape($banner_image['link']) . "', image = '" . $this->db->escape($banner_image['image']) . "', sort_order = '" . (int)$banner_image['sort_order'] . "'");
-                }
-            }
+    public function editActivityGroup($activity_group_id, $data)
+    {
+        $this->db->query("UPDATE " . DB_PREFIX . "activity_group SET name = '" . $this->db->escape((string)$data['group_name']) . "', sort_order = '" . (int)$data['sort_order'] . "', status = '" . (isset($data['status']) ? (int)$data['status'] : 0) . "', date_modified = NOW() WHERE activity_group_id = '" . (int)$activity_group_id . "'");
+    
+        # SEO URL
+        $this->db->query("DELETE FROM " . DB_PREFIX . "seo_url WHERE query = 'activity_group_id=" . (int)$activity_group_id . "'");
+        if (isset($data['activity_seo_url'])) {
+           
+            $this->db->query("INSERT INTO " . DB_PREFIX . "seo_url SET  query = 'activity_group_id=" . (int)$activity_group_id . "', keyword = '" . $this->db->escape((string)$data['activity_seo_url']) . "', push = '" . $this->db->escape('url=activity/activity_group&activity_group_id=' . (int)$activity_group_id) . "'");
+              
         }
     }
 
-    public function deleteActivityGroup($banner_id) {
-        $this->db->query("DELETE FROM " . DB_PREFIX . "banner WHERE banner_id = '" . (int)$banner_id . "'");
-        $this->db->query("DELETE FROM " . DB_PREFIX . "banner_image WHERE banner_id = '" . (int)$banner_id . "'");
+    public function deleteActivityGroup($activity_group_id)
+    {
+        $this->db->query("DELETE FROM " . DB_PREFIX . "activity_group WHERE activity_group_id = '" . (int)$activity_group_id . "'");
+
+        $this->cache->delete('activity_group');
     }
 
-    public function getActivityGroup($banner_id) {
-        $query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "banner WHERE banner_id = '" . (int)$banner_id . "'");
+    public function getActivityGroup($activity_group_id)
+    {
+        $query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "activity_group WHERE activity_group_id = '" . (int)$activity_group_id . "'");
 
         return $query->row;
     }
-
-    public function getActivityGroups() {
-        $query = $this->db->query("SELECT  * FROM " . DB_PREFIX . "activity_group WHERE status = '1'");
-
-        return $query->rows;
-    }
-
-    public function getActivityGroupImages($banner_id) {
-        $banner_image_data = array();
-
-        $banner_image_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "banner_image WHERE banner_id = '" . (int)$banner_id . "' ORDER BY sort_order ASC");
-
-        foreach($banner_image_query->rows as $banner_image) {
-            $banner_image_data[$banner_image['language_id']][] = array(
-                'title'         => $banner_image['title'],
-                'link'          => $banner_image['link'],
-                'image'         => $banner_image['image'],
-                'sort_order'    => $banner_image['sort_order']
-            );
-        }
-
-        return $banner_image_data;
-    }
-
-    public function getTotalActivityGroups() {
-        $query = $this->db->query("SELECT COUNT(*) AS total FROM " . DB_PREFIX . "banner");
-
-        return $query->row['total'];
-    }
-
-    public function showActivityGroups() {
-        $sql = "SELECT * FROM " . DB_PREFIX . "banner";
-
-        if(isset($this->request->post['search']['value'])) {
-            $sql .= " WHERE name LIKE '%" . $this->db->escape($this->request->post['search']['value']) . "%'";
-        }
-
-        $sort_data = array(
-            'name',
-            'status'
-        );
-
-        if(isset($data['sort']) && in_array($data['sort'], $sort_data)) {
-            $sql .= " ORDER BY " . $data['sort'];
-        } else {
-            $sql .= " ORDER BY name";
-        }
-
-        if(isset($data['order']) && ($data['order'] == 'DESC')) {
-            $sql .= " DESC";
-        } else {
-            $sql .= " ASC";
-        }
-
-        if(isset($data['start']) || isset($data['limit'])) {
-            if($data['start'] < 0) {
-                $data['start'] = 0;
-            }
-
-            if($data['limit'] < 1) {
-                $data['limit'] = 20;
-            }
-
-            $sql .= " LIMIT " . (int)$data['start'] . "," . (int)$data['limit'];
-        }
-
-        $query = $this->db->query($sql);
+    public function getActivityGroups()
+    {
+        $query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "activity_group");
 
         return $query->rows;
+    }
+        public function getActivityGroupSeoUrls($activity_group_id)
+    {
+        $query = $this->db->query("SELECT * FROM " . DB_PREFIX . "seo_url WHERE query = 'activity_group_id=" . (int)$activity_group_id . "'");
+
+        return $query->row;
     }
 }

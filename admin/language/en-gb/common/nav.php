@@ -68,8 +68,13 @@ $_['text_zone']                 = 'States / Provinces';
 $_['text_event']                = 'Event';
 $_['text_event_group']          = 'Event Group';
 $_['text_notice']               = 'Notice';
+$_['text_gallery']              = 'Gallery';
+$_['text_gallery_group']        = 'Gallery Group';
 $_['text_sport']                = 'Sports';
+$_['text_sport_group']          = 'Sport Group';
 $_['text_venue']                = 'Venue';
+$_['text_venue_group']          = 'Venue Group';
 $_['text_activity']             = 'Activity';
+$_['text_activity_group']       = 'Activity Group';
 $_['text_store']                = 'Store';
 

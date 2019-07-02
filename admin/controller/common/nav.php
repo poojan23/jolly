@@ -74,6 +74,14 @@ class ControllerCommonNav extends PT_Controller
                     'children'  => array()
                 );
             }
+            
+            if ($this->user->hasPermission('access', 'activity/activity_group')) {
+                $activity[] = array(
+                    'name'      => $this->language->get('text_activity_group'),
+                    'href'      => $this->url->link('activity/activity_group', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
    
             if ($activity) {
                 $data['menus'][] = array(
@@ -113,6 +121,25 @@ class ControllerCommonNav extends PT_Controller
                 );
             }
             
+            # Gallery
+            $gallery = array();
+            
+            if ($this->user->hasPermission('access', 'gallery/gallery')) {
+                $gallery[] = array(
+                    'name'      => $this->language->get('text_gallery'),
+                    'href'      => $this->url->link('gallery/gallery', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+            
+            if ($this->user->hasPermission('access', 'gallery/gallery_group')) {
+                $gallery[] = array(
+                    'name'      => $this->language->get('text_gallery_group'),
+                    'href'      => $this->url->link('gallery/gallery_group', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+            
             # Sport
             $sport = array();
             
@@ -120,6 +147,14 @@ class ControllerCommonNav extends PT_Controller
                 $sport[] = array(
                     'name'      => $this->language->get('text_sport'),
                     'href'      => $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+            
+            if ($this->user->hasPermission('access', 'sport/sport_group')) {
+                $sport[] = array(
+                    'name'      => $this->language->get('text_sport_group'),
+                    'href'      => $this->url->link('sport/sport_group', 'user_token=' . $this->session->data['user_token']),
                     'children'  => array()
                 );
             }
@@ -141,6 +176,14 @@ class ControllerCommonNav extends PT_Controller
                 $venue[] = array(
                     'name'      => $this->language->get('text_venue'),
                     'href'      => $this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+            
+            if ($this->user->hasPermission('access', 'venue/venue_group')) {
+                $venue[] = array(
+                    'name'      => $this->language->get('text_venue_group'),
+                    'href'      => $this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token']),
                     'children'  => array()
                 );
             }

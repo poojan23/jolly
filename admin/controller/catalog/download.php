@@ -253,12 +253,10 @@ class ControllerCatalogDownload extends PT_Controller {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
-        foreach ($this->request->post['download_description'] as $language_id => $value) {
-            if ((utf8_strlen($value['name']) < 3) || (utf8_strlen($value['name']) > 64)) {
-                $this->error['name'][$language_id] = $this->language->get('error_name');
-            }
+        if ((utf8_strlen($this->request->post['name']) < 3) || (utf8_strlen($this->request->post['name']) > 128)) {
+            $this->error['name'] = $this->language->get('error_name');
         }
-
+        
         if ((utf8_strlen($this->request->post['filename']) < 3) || (utf8_strlen($this->request->post['filename']) > 128)) {
             $this->error['filename'] = $this->language->get('error_filename');
         }

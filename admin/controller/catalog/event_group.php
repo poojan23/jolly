@@ -40,6 +40,7 @@ class ControllerCatalogEventGroup extends PT_Controller {
         $this->load->model('catalog/event_group');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+            
             $this->model_catalog_event_group->editEventGroup($this->request->get['event_group_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
@@ -216,12 +217,12 @@ class ControllerCatalogEventGroup extends PT_Controller {
             $data['name'] = '';
         }
 
-        if (isset($this->request->post['event_id'])) {
-            $data['event_id'] = $this->request->post['event_id'];
+        if (isset($this->request->post['event_group_id'])) {
+            $data['event_group_id'] = $this->request->post['event_group_id'];
         } elseif (!empty($event_group_info)) {
-            $data['event_id'] = $event_group_info['event_id'];
+            $data['event_group_id'] = $event_group_info['event_group_id'];
         } else {
-            $data['event_id'] = '';
+            $data['event_group_id'] = '';
         }
 
         if (isset($this->request->post['sort_order'])) {
@@ -238,9 +239,9 @@ class ControllerCatalogEventGroup extends PT_Controller {
         if (isset($this->request->post['event_seo_url'])) {
             $data['event_seo_url'] = $this->request->post['event_seo_url'];
         } elseif (!empty($event_seo)) {
-            $data['event_seo'] = $event_seo['keyword'];
+            $data['event_seo_url'] = $event_seo['keyword'];
         } else {
-            $data['event_seo'] = '';
+            $data['event_seo_url'] = '';
         }
 
         if (isset($this->request->post['status'])) {
@@ -281,41 +282,7 @@ class ControllerCatalogEventGroup extends PT_Controller {
 
         return !$this->error;
     }
-
-    public function icons() {
-        $json = array();
-
-        if (!$json) {
-            $pattern = '/\.(fa-(?:\w+(?:-)?)+):before\s+{\s*content:\s*"(.+)";\s+}/';
-            $subject = file_get_contents('view/dist/plugins/font-awesome/css/font-awesome.css');
-
-            preg_match_all($pattern, $subject, $matches, PREG_SET_ORDER);
-
-            foreach ($matches as $match) {
-                $json[] = array(
-                    'icon' => $match[1],
-                    'css' => implode(array(str_replace('\\', '&#x', $match[2]), ';'))
-                );
-            }
-
-            // $json = var_export($json, TRUE);
-            // $json = stripslashes($json);
-        }
-
-        $sort_order = array();
-
-        foreach ($json as $key => $value) {
-            $sort_order[$key] = $value;
-        }
-
-        array_multisort($sort_order, SORT_ASC, $json);
-
-        //print_r($json);
-
-        $this->response->addHeader('Content-Type: application/json');
-        $this->response->setOutput(json_encode($json));
-    }
-
+    
     public function autocomplete() {
         $json = array();
 

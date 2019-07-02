@@ -50,8 +50,10 @@ class ModelActivityActivity extends PT_Model
     }
 
     public function deleteActivity($activity_id) {
-        $this->db->query("DELETE FROM " . DB_PREFIX . "banner WHERE banner_id = '" . (int)$banner_id . "'");
-        $this->db->query("DELETE FROM " . DB_PREFIX . "banner_image WHERE banner_id = '" . (int)$banner_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "activity WHERE activity_id = '" . (int)$activity_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "activity_fee WHERE activity_id = '" . (int)$activity_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "activity_coach WHERE activity_id = '" . (int)$activity_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "activity_time WHERE activity_id = '" . (int)$activity_id . "'");
     }
 
     public function getActivity($activity_id) {

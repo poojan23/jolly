@@ -60,8 +60,8 @@ class ModelCatalogEvent extends PT_Model {
     }
 
     public function deleteEvent($event_id) {
-        $this->db->query("DELETE FROM " . DB_PREFIX . "event WHERE event_id = '" . (int) $event_id . "'");
-        $this->db->query("DELETE FROM " . DB_PREFIX . "event_description WHERE event_id = '" . (int) $event_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "events WHERE event_id = '" . (int) $event_id . "'");
+        $this->db->query("DELETE FROM " . DB_PREFIX . "event_image WHERE event_id = '" . (int) $event_id . "'");
         $this->db->query("DELETE FROM " . DB_PREFIX . "seo_url WHERE query = 'event_id=" . (int) $event_id . "'");
 
         $this->cache->delete('event');

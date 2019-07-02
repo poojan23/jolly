@@ -22,7 +22,7 @@ class ControllerCatalogEvent extends PT_Controller {
         $this->load->model('catalog/event');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            
+
             $this->model_catalog_event->addEvent($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
@@ -167,12 +167,6 @@ class ControllerCatalogEvent extends PT_Controller {
             $data['name_err'] = array();
         }
 
-        if (isset($this->error['description'])) {
-            $data['description_err'] = $this->error['description'];
-        } else {
-            $data['description_err'] = array();
-        }
-        
         if (isset($this->error['keyword'])) {
             $data['keyword_err'] = $this->error['keyword'];
         } else {
@@ -228,7 +222,7 @@ class ControllerCatalogEvent extends PT_Controller {
         $this->load->model('catalog/event_group');
 
         $data['event_groups'] = $this->model_catalog_event_group->getEventGroups();
-       
+
         if (isset($this->request->post['event_name'])) {
             $data['event_name'] = $this->request->post['event_name'];
         } elseif (!empty($event_info)) {
@@ -236,7 +230,7 @@ class ControllerCatalogEvent extends PT_Controller {
         } else {
             $data['event_name'] = '';
         }
-        
+
         if (isset($this->request->post['description'])) {
             $data['description'] = $this->request->post['description'];
         } elseif (!empty($event_info)) {
@@ -262,7 +256,7 @@ class ControllerCatalogEvent extends PT_Controller {
         } else {
             $data['thumb'] = $data['placeholder'];
         }
-        
+
         // Images
         if (isset($this->request->post['event_image'])) {
             $event_images = $this->request->post['event_image'];
@@ -326,6 +320,10 @@ class ControllerCatalogEvent extends PT_Controller {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
+        if ((utf8_strlen($this->request->post['event_name']) < 3) || (utf8_strlen($this->request->post['event_name']) > 128)) {
+            $this->error['event_name'] = $this->language->get('error_event_name');
+        }
+        
         if ($this->error && !isset($this->error['warning'])) {
             $this->error['warning'] = $this->language->get('error_warning');
         }
@@ -382,7 +380,7 @@ class ControllerCatalogEvent extends PT_Controller {
             $this->load->model('catalog/event');
 
             $results = $this->model_catalog_event->getEvents();
-          
+
             foreach ($results as $result) {
                 $json[] = array(
                     'event_id' => $result['event_id'],
