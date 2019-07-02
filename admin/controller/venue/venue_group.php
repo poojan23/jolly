@@ -1,71 +1,70 @@
 <?php
 
-class ControllerSportSport extends PT_Controller {
+class ControllerVenueVenueGroup extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue_group');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue_group');
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
-//            print_r($this->request->post);exit;
-            $this->model_sport_sport->addSport($this->request->post);
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
+            $this->model_venue_venue_group->addVenueGroup($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token'], true));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue_group');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_sport_sport->editSport($this->request->get['sport_id'], $this->request->post);
+            $this->model_venue_venue_group->editVenueGroup($this->request->get['banner_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token'], true));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue_group');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue_group');
 
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $sport_id) {
-                $this->model_sport_sport->deleteSport($sport_id);
+            foreach ($this->request->post['selected'] as $banner_id) {
+                $this->model_venue_venue_group->deleteVenueGroup($banner_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token'], true));
         }
 
         $this->getList();
@@ -100,22 +99,23 @@ class ControllerSportSport extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('sport/sport/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('sport/sport/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('venue/venue_group/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('venue/venue_group/delete', 'user_token=' . $this->session->data['user_token']);
 
-        $data['sports'] = array();
+        $data['banners'] = array();
 
-        $results = $this->model_sport_sport->getSports();
-
+        $results = $this->model_venue_venue_group->getVenueGroups();
+       
         foreach ($results as $result) {
-            $data['sports'][] = array(
-                'sport_id' => $result['sport_id'],
+            $data['banners'][] = array(
+                'banner_id' => $result['banner_id'],
                 'name' => $result['name'],
-                'edit' => $this->url->link('sport/sport/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $result['sport_id']),
-                'delete' => $this->url->link('sport/sport/delete', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $result['sport_id'])
+                'status' => $result['status'],
+                'edit' => $this->url->link('venue/venue_group/edit', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $result['banner_id']),
+                'delete' => $this->url->link('venue/venue_group/delete', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $result['banner_id'])
             );
         }
 
@@ -143,7 +143,7 @@ class ControllerSportSport extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('sport/sport_list', $data));
+        $this->response->setOutput($this->load->view('venue/venue_group_list', $data));
     }
 
     protected function getForm() {
@@ -152,7 +152,7 @@ class ControllerSportSport extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
 
-        $data['text_form'] = !isset($this->request->get['sport_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['banner_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
@@ -160,10 +160,16 @@ class ControllerSportSport extends PT_Controller {
             $data['warning_err'] = '';
         }
 
-        if (isset($this->error['sport_fee'])) {
-            $data['error_sport_fee'] = $this->error['sport_fee'];
+        if (isset($this->error['name'])) {
+            $data['error_name'] = $this->error['name'];
         } else {
-            $data['error_sport_fee'] = array();
+            $data['error_name'] = '';
+        }
+
+        if (isset($this->error['banner_image'])) {
+            $data['error_banner_image'] = $this->error['banner_image'];
+        } else {
+            $data['error_banner_image'] = array();
         }
 
         if (isset($this->error['keyword'])) {
@@ -181,124 +187,94 @@ class ControllerSportSport extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['sport_id'])) {
-            $data['action'] = $this->url->link('sport/sport/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['banner_id'])) {
+            $data['action'] = $this->url->link('venue/venue_group/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('sport/sport/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('venue/venue_group/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('sport/sport/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $this->request->get['sport_id']);
+            $data['action'] = $this->url->link('venue/venue_group/edit', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $this->request->get['banner_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('sport/sport/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $this->request->get['sport_id'])
+                'href' => $this->url->link('venue/venue_group/edit', 'user_token=' . $this->session->data['user_token'] . '&banner_id=' . $this->request->get['banner_id'])
             );
         }
 
-        $data['cancel'] = $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('venue/venue_group', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['sport_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $sport_info = $this->model_sport_sport->getSport($this->request->get['sport_id']);
+        if (isset($this->request->get['banner_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+           $banner_info = $this->model_venue_venue_group->getVenueGroup($this->request->get['banner_id']);
         }
-//        print_r($sport_info);exit;
+        
         $data['user_token'] = $this->session->data['user_token'];
 
         if (isset($this->request->post['name'])) {
             $data['name'] = $this->request->post['name'];
-        } elseif (!empty($sport_info)) {
-            $data['name'] = $sport_info['name'];
+        } elseif (!empty($banner_info)) {
+            $data['name'] = $banner_info['name'];
         } else {
             $data['name'] = '';
         }
 
-        if (isset($this->request->post['member_group_id'])) {
-            $data['member_group_id'] = $this->request->post['member_group_id'];
-        } elseif (!empty($sport_info)) {
-            $data['member_group_id'] = $sport_info['member_group_id'];
-        } else {
-            $data['member_group_id'] = '';
-        }
-
         if (isset($this->request->post['status'])) {
             $data['status'] = $this->request->post['status'];
-        } elseif (!empty($sport_info)) {
-            $data['status'] = $sport_info['status'];
+        } elseif (!empty($banner_info)) {
+            $data['status'] = $banner_info['status'];
         } else {
             $data['status'] = true;
         }
-
+        
         if (isset($this->request->post['sport_group_id'])) {
             $data['sport_group_id'] = $this->request->post['sport_group_id'];
-        } elseif (!empty($sport_info)) {
-            $data['sport_group_id'] = $sport_info['sport_group_id'];
+        } elseif (!empty($event_info)) {
+            $data['sport_group_id'] = $event_info['sport_group_id'];
         } else {
             $data['sport_group_id'] = '';
         }
 
-//        if (isset($this->request->post['isActive'])) {
-//            $data['isActive'] = $this->request->post['isActive'];
-//        } elseif (!empty($sport_info)) {
-//            $data['isActive'] = $sport_info['isActive'];
-//        } else {
-//            $data['isActive'] = '';
-//        }
+        $this->load->model('venue/venue_group_group');
 
-
-        $this->load->model('sport/sport_group');
-
-        $data['sport_groups'] = $this->model_sport_sport_group->getSportGroups();
-
+        $data['sport_groups'] = $this->model_venue_venue_group_group->getVenueGroupGroups();
+        
         $this->load->model('localisation/language');
 
         $data['languages'] = $this->model_localisation_language->getLanguages();
 
         $this->load->model('tool/image');
 
-        if (isset($this->request->post['sport_fees'])) {
-            $sport_fees = $this->request->post['sport_fees'];
-        } elseif (isset($this->request->get['sport_id'])) {
-            $sport_fees = $this->model_sport_sport->getSportFees($this->request->get['sport_id']);
+        if (isset($this->request->post['banner_image'])) {
+            $banner_images = $this->request->post['banner_image'];
+        } elseif (isset($this->request->get['banner_id'])) {
+            $banner_images = $this->model_venue_venue_group->getVenueGroupImages($this->request->get['banner_id']);
         } else {
-            $sport_fees = array();
+            $banner_images = array();
         }
 
-        $data['sport_fees'] = array();
+        $data['banner_images'] = array();
 
-        foreach ($sport_fees as $sport_fee) {
+        foreach ($banner_images as $key => $value) {
+            foreach ($value as $banner_image) {
+                if (is_file(DIR_IMAGE . $banner_image['image'])) {
+                    $image = $banner_image['image'];
+                    $thumb = $banner_image['image'];
+                } else {
+                    $image = '';
+                    $thumb = 'no-image.png';
+                }
 
-            $data['sport_fees'][] = array(
-                'period' => $sport_fee['period'],
-                'time' => $sport_fee['time'],
-                'fees' => $sport_fee['fees'],
-                'sort_order' => $sport_fee['sort_order']
-            );
+                $data['banner_images'][$key][] = array(
+                    'title' => $banner_image['title'],
+                    'link' => $banner_image['link'],
+                    'image' => $image,
+                    'thumb' => $this->model_tool_image->resize($thumb, 100, 100),
+                    'sort_order' => $banner_image['sort_order']
+                );
+            }
         }
-
-        if (isset($this->request->post['coaching'])) {
-            $coachings = $this->request->post['coaching'];
-        } elseif (isset($this->request->get['sport_id'])) {
-            $coachings = $this->model_sport_sport->getSportCoaching($this->request->get['sport_id']);
-        } else {
-            $coachings = array();
-        }
-
-        $data['coachings'] = array();
-
-        foreach ($coachings as $coaching) {
-
-            $data['coachings'][] = array(
-                'coach_name' => $coaching['coach_name'],
-                'coaching_type' => $coaching['coaching_type'],
-                'days' => $coaching['days'],
-                'time' => $coaching['time'],
-                'fees' => $coaching['fees'],
-                'sort_order' => $coaching['sort_order']
-            );
-        }
-
 
         $data['placeholder'] = $this->model_tool_image->resize('no-image.png', 100, 100);
 
@@ -306,11 +282,11 @@ class ControllerSportSport extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('sport/sport_form', $data));
+        $this->response->setOutput($this->load->view('venue/venue_group_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'sport/sport')) {
+        if (!$this->user->hasPermission('modify', 'venue/venue_group')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -318,11 +294,11 @@ class ControllerSportSport extends PT_Controller {
             $this->error['name'] = $this->language->get('error_name');
         }
 
-        if (isset($this->request->post['sport_fee'])) {
-            foreach ($this->request->post['sport_fee'] as $language_id => $value) {
-                foreach ($value as $sport_fee_id => $sport_fee) {
-                    if ((utf8_strlen($sport_fee['title']) < 2) || (utf8_strlen($sport_fee['title']) > 64)) {
-                        $this->error['sport_fee'][$language_id][$sport_fee_id] = $this->language->get('error_title');
+        if (isset($this->request->post['banner_image'])) {
+            foreach ($this->request->post['banner_image'] as $language_id => $value) {
+                foreach ($value as $banner_image_id => $banner_image) {
+                    if ((utf8_strlen($banner_image['title']) < 2) || (utf8_strlen($banner_image['title']) > 64)) {
+                        $this->error['banner_image'][$language_id][$banner_image_id] = $this->language->get('error_title');
                     }
                 }
             }
@@ -336,7 +312,7 @@ class ControllerSportSport extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'sport/sport')) {
+        if (!$this->user->hasPermission('delete', 'venue/venue_group')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -347,7 +323,7 @@ class ControllerSportSport extends PT_Controller {
         $json = array();
 
         if (isset($this->request->get['filter_name'])) {
-            $this->load->model('sport/sport');
+            $this->load->model('venue/venue_group');
 
             $filter_data = [
                 'filter_name' => $this->request->get['filter_name'],
@@ -357,11 +333,11 @@ class ControllerSportSport extends PT_Controller {
                 'limit' => 5
             ];
 
-            $results = $this->model_sport_sport->getSports($filter_data);
+            $results = $this->model_venue_venue_group->getVenueGroups($filter_data);
 
             foreach ($results as $result) {
                 $json[] = [
-                    'sport_id' => $result['sport_id'],
+                    'banner_id' => $result['banner_id'],
                     'name' => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))
                 ];
             }

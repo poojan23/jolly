@@ -160,6 +160,9 @@ $_['tab_video']                     = 'Video';
 $_['tab_member']                    = 'Member';
 $_['tab_fees']                      = 'Fees';
 $_['tab_coaching']                  = 'Coaching';
+$_['tab_tax']                       = 'Tax';
+$_['tab_info']                      = 'Info';
+$_['tab_time']                      = 'Timining';
 
 /* When doing translations only include the matching language code */
 

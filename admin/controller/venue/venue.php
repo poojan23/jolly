@@ -1,71 +1,70 @@
 <?php
 
-class ControllerSportSport extends PT_Controller {
+class ControllerVenueVenue extends PT_Controller {
 
     private $error = array();
 
     public function index() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue');
 
         $this->getList();
     }
 
     public function add() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue');
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
-//            print_r($this->request->post);exit;
-            $this->model_sport_sport->addSport($this->request->post);
+            $this->model_venue_venue->addVenue($this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token'], true));
         }
 
         $this->getForm();
     }
 
     public function edit() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue');
 
-        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validateForm()) {
-            $this->model_sport_sport->editSport($this->request->get['sport_id'], $this->request->post);
+        if (($this->request->server['REQUEST_METHOD'] == 'POST')) {
+            $this->model_venue_venue->editVenue($this->request->get['venue_id'], $this->request->post);
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token'], true));
         }
 
         $this->getForm();
     }
 
     public function delete() {
-        $this->load->language('sport/sport');
+        $this->load->language('venue/venue');
 
         $this->document->setTitle($this->language->get('heading_title'));
 
-        $this->load->model('sport/sport');
+        $this->load->model('venue/venue');
 
         if (isset($this->request->post['selected'])) {
-            foreach ($this->request->post['selected'] as $sport_id) {
-                $this->model_sport_sport->deleteSport($sport_id);
+            foreach ($this->request->post['selected'] as $venue_id) {
+                $this->model_venue_venue->deleteVenue($venue_id);
             }
 
             $this->session->data['success'] = $this->language->get('text_success');
 
-            $this->response->redirect($this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'], true));
+            $this->response->redirect($this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token'], true));
         }
 
         $this->getList();
@@ -100,22 +99,22 @@ class ControllerSportSport extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token'])
         );
 
-        $data['add'] = $this->url->link('sport/sport/add', 'user_token=' . $this->session->data['user_token']);
-        $data['delete'] = $this->url->link('sport/sport/delete', 'user_token=' . $this->session->data['user_token']);
+        $data['add'] = $this->url->link('venue/venue/add', 'user_token=' . $this->session->data['user_token']);
+        $data['delete'] = $this->url->link('venue/venue/delete', 'user_token=' . $this->session->data['user_token']);
 
         $data['sports'] = array();
 
-        $results = $this->model_sport_sport->getSports();
+        $results = $this->model_venue_venue->getVenues();
 
         foreach ($results as $result) {
             $data['sports'][] = array(
-                'sport_id' => $result['sport_id'],
+                'venue_id' => $result['venue_id'],
                 'name' => $result['name'],
-                'edit' => $this->url->link('sport/sport/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $result['sport_id']),
-                'delete' => $this->url->link('sport/sport/delete', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $result['sport_id'])
+                'edit' => $this->url->link('venue/venue/edit', 'user_token=' . $this->session->data['user_token'] . '&venue_id=' . $result['venue_id']),
+                'delete' => $this->url->link('venue/venue/delete', 'user_token=' . $this->session->data['user_token'] . '&venue_id=' . $result['venue_id'])
             );
         }
 
@@ -143,7 +142,7 @@ class ControllerSportSport extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('sport/sport_list', $data));
+        $this->response->setOutput($this->load->view('venue/venue_list', $data));
     }
 
     protected function getForm() {
@@ -152,24 +151,12 @@ class ControllerSportSport extends PT_Controller {
         $this->document->addScript("view/dist/plugins/ckeditor/adapters/jquery.js");
         $this->document->addScript("view/dist/plugins/iCheck/icheck.min.js");
 
-        $data['text_form'] = !isset($this->request->get['sport_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
+        $data['text_form'] = !isset($this->request->get['venue_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
         if (isset($this->error['warning'])) {
             $data['warning_err'] = $this->error['warning'];
         } else {
             $data['warning_err'] = '';
-        }
-
-        if (isset($this->error['sport_fee'])) {
-            $data['error_sport_fee'] = $this->error['sport_fee'];
-        } else {
-            $data['error_sport_fee'] = array();
-        }
-
-        if (isset($this->error['keyword'])) {
-            $data['keyword_err'] = $this->error['keyword'];
-        } else {
-            $data['keyword_err'] = '';
         }
 
         $data['breadcrumbs'] = array();
@@ -181,121 +168,132 @@ class ControllerSportSport extends PT_Controller {
 
         $data['breadcrumbs'][] = array(
             'text' => $this->language->get('heading_title'),
-            'href' => $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token'])
+            'href' => $this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token'])
         );
 
-        if (!isset($this->request->get['sport_id'])) {
-            $data['action'] = $this->url->link('sport/sport/add', 'user_token=' . $this->session->data['user_token']);
+        if (!isset($this->request->get['venue_id'])) {
+            $data['action'] = $this->url->link('venue/venue/add', 'user_token=' . $this->session->data['user_token']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_add'),
-                'href' => $this->url->link('sport/sport/add', 'user_token=' . $this->session->data['user_token'])
+                'href' => $this->url->link('venue/venue/add', 'user_token=' . $this->session->data['user_token'])
             );
         } else {
-            $data['action'] = $this->url->link('sport/sport/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $this->request->get['sport_id']);
+            $data['action'] = $this->url->link('venue/venue/edit', 'user_token=' . $this->session->data['user_token'] . '&venue_id=' . $this->request->get['venue_id']);
             $data['breadcrumbs'][] = array(
                 'text' => $this->language->get('text_edit'),
-                'href' => $this->url->link('sport/sport/edit', 'user_token=' . $this->session->data['user_token'] . '&sport_id=' . $this->request->get['sport_id'])
+                'href' => $this->url->link('venue/venue/edit', 'user_token=' . $this->session->data['user_token'] . '&venue_id=' . $this->request->get['venue_id'])
             );
         }
 
-        $data['cancel'] = $this->url->link('sport/sport', 'user_token=' . $this->session->data['user_token']);
+        $data['cancel'] = $this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token']);
 
-        if (isset($this->request->get['sport_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
-            $sport_info = $this->model_sport_sport->getSport($this->request->get['sport_id']);
+        if (isset($this->request->get['venue_id']) && ($this->request->server['REQUEST_METHOD'] != 'POST')) {
+            $venue_info = $this->model_venue_venue->getVenue($this->request->get['venue_id']);
         }
-//        print_r($sport_info);exit;
+        
         $data['user_token'] = $this->session->data['user_token'];
 
         if (isset($this->request->post['name'])) {
             $data['name'] = $this->request->post['name'];
-        } elseif (!empty($sport_info)) {
-            $data['name'] = $sport_info['name'];
+        } elseif (!empty($venue_info)) {
+            $data['name'] = $venue_info['name'];
         } else {
             $data['name'] = '';
         }
-
+        
         if (isset($this->request->post['member_group_id'])) {
             $data['member_group_id'] = $this->request->post['member_group_id'];
-        } elseif (!empty($sport_info)) {
-            $data['member_group_id'] = $sport_info['member_group_id'];
+        } elseif (!empty($venue_info)) {
+            $data['member_group_id'] = $venue_info['member_group_id'];
         } else {
             $data['member_group_id'] = '';
         }
 
         if (isset($this->request->post['status'])) {
             $data['status'] = $this->request->post['status'];
-        } elseif (!empty($sport_info)) {
-            $data['status'] = $sport_info['status'];
+        } elseif (!empty($venue_info)) {
+            $data['status'] = $venue_info['status'];
         } else {
             $data['status'] = true;
         }
 
-        if (isset($this->request->post['sport_group_id'])) {
-            $data['sport_group_id'] = $this->request->post['sport_group_id'];
-        } elseif (!empty($sport_info)) {
-            $data['sport_group_id'] = $sport_info['sport_group_id'];
+        if (isset($this->request->post['venue_group_id'])) {
+            $data['venue_group_id'] = $this->request->post['venue_group_id'];
+        } elseif (!empty($venue_info)) {
+            $data['venue_group_id'] = $venue_info['venue_group_id'];
         } else {
-            $data['sport_group_id'] = '';
+            $data['venue_group_id'] = '';
         }
 
-//        if (isset($this->request->post['isActive'])) {
-//            $data['isActive'] = $this->request->post['isActive'];
-//        } elseif (!empty($sport_info)) {
-//            $data['isActive'] = $sport_info['isActive'];
-//        } else {
-//            $data['isActive'] = '';
-//        }
+        $this->load->model('venue/venue_group');
 
-
-        $this->load->model('sport/sport_group');
-
-        $data['sport_groups'] = $this->model_sport_sport_group->getSportGroups();
-
+        $data['venue_groups'] = $this->model_venue_venue_group->getVenueGroups();
+        
         $this->load->model('localisation/language');
 
         $data['languages'] = $this->model_localisation_language->getLanguages();
 
         $this->load->model('tool/image');
 
-        if (isset($this->request->post['sport_fees'])) {
-            $sport_fees = $this->request->post['sport_fees'];
-        } elseif (isset($this->request->get['sport_id'])) {
-            $sport_fees = $this->model_sport_sport->getSportFees($this->request->get['sport_id']);
+        if (isset($this->request->post['venue_fees'])) {
+            $venue_fees = $this->request->post['venue_fees'];
+        } elseif (isset($this->request->get['venue_id'])) {
+            $venue_fees = $this->model_venue_venue->getVenueFees($this->request->get['venue_id']);
         } else {
-            $sport_fees = array();
+            $venue_fees = array();
         }
 
-        $data['sport_fees'] = array();
+        $data['venue_fees'] = array();
 
-        foreach ($sport_fees as $sport_fee) {
+        foreach ($venue_fees as $venue_fee) {
 
-            $data['sport_fees'][] = array(
-                'period' => $sport_fee['period'],
-                'time' => $sport_fee['time'],
-                'fees' => $sport_fee['fees'],
-                'sort_order' => $sport_fee['sort_order']
+            $data['venue_fees'][] = array(
+                'time'              => $venue_fee['time'],
+                'hire_charge'       => $venue_fee['hire_charge'],
+                'cleaning_charge'   => $venue_fee['cleaning_charge'],
+                'electric_point'    => $venue_fee['electric_point'],
+                'extra_hour'        => $venue_fee['extra_hour'],
+                'tv'                => $venue_fee['tv'],
+                'deposite'          => $venue_fee['deposite'],
+                'sort_order'        => $venue_fee['sort_order']
             );
         }
 
-        if (isset($this->request->post['coaching'])) {
-            $coachings = $this->request->post['coaching'];
-        } elseif (isset($this->request->get['sport_id'])) {
-            $coachings = $this->model_sport_sport->getSportCoaching($this->request->get['sport_id']);
+        if (isset($this->request->post['tax'])) {
+            $taxs = $this->request->post['tax'];
+        } elseif (isset($this->request->get['venue_id'])) {
+            $taxs = $this->model_venue_venue->getVenueTax($this->request->get['venue_id']);
         } else {
-            $coachings = array();
+            $taxs = array();
         }
 
-        $data['coachings'] = array();
+        $data['taxs'] = array();
 
-        foreach ($coachings as $coaching) {
+        foreach ($taxs as $tax) {
 
-            $data['coachings'][] = array(
-                'coach_name' => $coaching['coach_name'],
-                'coaching_type' => $coaching['coaching_type'],
-                'days' => $coaching['days'],
-                'time' => $coaching['time'],
-                'fees' => $coaching['fees'],
-                'sort_order' => $coaching['sort_order']
+            $data['taxs'][] = array(
+                'venue' => $tax['venue'],
+                'royalty' => $tax['royalty'],
+                'gst' => $tax['gst'],
+                'total' => $tax['total'],
+                'sort_order' => $tax['sort_order']
+            );
+        }
+        if (isset($this->request->post['info'])) {
+            $infos = $this->request->post['info'];
+        } elseif (isset($this->request->get['venue_id'])) {
+            $infos = $this->model_venue_venue->getVenueInfo($this->request->get['venue_id']);
+        } else {
+            $infos = array();
+        }
+
+        $data['infos'] = array();
+
+        foreach ($infos as $info) {
+
+            $data['infos'][] = array(
+                'title' => $info['title'],
+                'description' => $info['description']
             );
         }
 
@@ -306,11 +304,11 @@ class ControllerSportSport extends PT_Controller {
         $data['nav'] = $this->load->controller('common/nav');
         $data['footer'] = $this->load->controller('common/footer');
 
-        $this->response->setOutput($this->load->view('sport/sport_form', $data));
+        $this->response->setOutput($this->load->view('venue/venue_form', $data));
     }
 
     protected function validateForm() {
-        if (!$this->user->hasPermission('modify', 'sport/sport')) {
+        if (!$this->user->hasPermission('modify', 'venue/venue')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -318,11 +316,11 @@ class ControllerSportSport extends PT_Controller {
             $this->error['name'] = $this->language->get('error_name');
         }
 
-        if (isset($this->request->post['sport_fee'])) {
-            foreach ($this->request->post['sport_fee'] as $language_id => $value) {
-                foreach ($value as $sport_fee_id => $sport_fee) {
-                    if ((utf8_strlen($sport_fee['title']) < 2) || (utf8_strlen($sport_fee['title']) > 64)) {
-                        $this->error['sport_fee'][$language_id][$sport_fee_id] = $this->language->get('error_title');
+        if (isset($this->request->post['venue_fee'])) {
+            foreach ($this->request->post['venue_fee'] as $language_id => $value) {
+                foreach ($value as $venue_fee_id => $venue_fee) {
+                    if ((utf8_strlen($venue_fee['title']) < 2) || (utf8_strlen($venue_fee['title']) > 64)) {
+                        $this->error['venue_fee'][$language_id][$venue_fee_id] = $this->language->get('error_title');
                     }
                 }
             }
@@ -336,7 +334,7 @@ class ControllerSportSport extends PT_Controller {
     }
 
     protected function validateDelete() {
-        if (!$this->user->hasPermission('delete', 'sport/sport')) {
+        if (!$this->user->hasPermission('delete', 'venue/venue')) {
             $this->error['warning'] = $this->language->get('error_permission');
         }
 
@@ -347,7 +345,7 @@ class ControllerSportSport extends PT_Controller {
         $json = array();
 
         if (isset($this->request->get['filter_name'])) {
-            $this->load->model('sport/sport');
+            $this->load->model('venue/venue');
 
             $filter_data = [
                 'filter_name' => $this->request->get['filter_name'],
@@ -357,11 +355,11 @@ class ControllerSportSport extends PT_Controller {
                 'limit' => 5
             ];
 
-            $results = $this->model_sport_sport->getSports($filter_data);
+            $results = $this->model_venue_venue->getVenues($filter_data);
 
             foreach ($results as $result) {
                 $json[] = [
-                    'sport_id' => $result['sport_id'],
+                    'venue_id' => $result['venue_id'],
                     'name' => strip_tags(html_entity_decode($result['name'], ENT_QUOTES, 'UTF-8'))
                 ];
             }

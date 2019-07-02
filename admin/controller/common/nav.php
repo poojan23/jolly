@@ -21,23 +21,7 @@ class ControllerCommonNav extends PT_Controller
 
             # Catalog
             $catalog = array();
-                        
-            if ($this->user->hasPermission('access', 'catalog/event')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_event'),
-                    'href'      => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
-                        
-            if ($this->user->hasPermission('access', 'catalog/event_group')) {
-                $catalog[] = array(
-                    'name'      => $this->language->get('text_event_group'),
-                    'href'      => $this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token']),
-                    'children'  => array()
-                );
-            }
-            
+
             if ($this->user->hasPermission('access', 'catalog/information')) {
                 $catalog[] = array(
                     'name'      => $this->language->get('text_information'),
@@ -80,6 +64,55 @@ class ControllerCommonNav extends PT_Controller
                 );
             }
 
+            # Activity
+            $activity = array();
+            
+            if ($this->user->hasPermission('access', 'activity/activity')) {
+                $activity[] = array(
+                    'name'      => $this->language->get('text_activity'),
+                    'href'      => $this->url->link('activity/activity', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+   
+            if ($activity) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_activity'),
+                    'href'      => '',
+                    'children'  => $activity
+                );
+            }
+            
+            # Event
+            $event = array();
+            
+            if ($this->user->hasPermission('access', 'catalog/event')) {
+                $event[] = array(
+                    'name'      => $this->language->get('text_event'),
+                    'href'      => $this->url->link('catalog/event', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+            if ($this->user->hasPermission('access', 'catalog/event_group')) {
+                $event[] = array(
+                    'name'      => $this->language->get('text_event_group'),
+                    'href'      => $this->url->link('catalog/event_group', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+   
+            if ($event) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_event'),
+                    'href'      => '',
+                    'children'  => $event
+                );
+            }
+            
             # Sport
             $sport = array();
             
@@ -98,6 +131,27 @@ class ControllerCommonNav extends PT_Controller
                     'name'      => $this->language->get('text_sport'),
                     'href'      => '',
                     'children'  => $sport
+                );
+            }
+
+            # Venue
+            $venue = array();
+            
+            if ($this->user->hasPermission('access', 'venue/venue')) {
+                $venue[] = array(
+                    'name'      => $this->language->get('text_venue'),
+                    'href'      => $this->url->link('venue/venue', 'user_token=' . $this->session->data['user_token']),
+                    'children'  => array()
+                );
+            }
+   
+            if ($venue) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_venue'),
+                    'href'      => '',
+                    'children'  => $venue
                 );
             }
             

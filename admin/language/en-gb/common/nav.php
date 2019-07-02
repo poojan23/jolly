@@ -69,4 +69,7 @@ $_['text_event']                = 'Event';
 $_['text_event_group']          = 'Event Group';
 $_['text_notice']               = 'Notice';
 $_['text_sport']                = 'Sports';
+$_['text_venue']                = 'Venue';
+$_['text_activity']             = 'Activity';
+$_['text_store']                = 'Store';
 
