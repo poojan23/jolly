@@ -228,13 +228,17 @@ class ControllerGalleryGallery extends PT_Controller {
             $data['status'] = true;
         }
         
-        if (isset($this->request->post['gallery_group_id'])) {
-            $data['gallery_group_id'] = $this->request->post['gallery_group_id'];
-        } elseif (!empty($gallery_info)) {
-            $data['gallery_group_id'] = $gallery_info['gallery_group_id'];
-        } else {
-            $data['gallery_group_id'] = '';
-        }
+//        if (isset($this->request->post['gallery_group_id'])) {
+//            $data['gallery_group_id'] = $this->request->post['gallery_group_id'];
+//        } elseif (!empty($gallery_info)) {
+//            $data['gallery_group_id'] = $gallery_info['gallery_group_id'];
+//        } else {
+//            $data['gallery_group_id'] = '';
+//        }
+//        
+        $this->load->model('gallery/gallery_group');
+
+        $data['gallery_groups'] = $this->model_gallery_gallery_group->getGalleryGroups();
 
         $this->load->model('localisation/language');
 

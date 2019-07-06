@@ -140,6 +140,16 @@ class ControllerCommonNav extends PT_Controller
                 );
             }
             
+             if ($gallery) {
+                $data['menus'][] = array(
+                    'id'        => 'menu-design',
+                    'icon'      => 'fa-desktop',
+                    'name'      => $this->language->get('text_gallery'),
+                    'href'      => '',
+                    'children'  => $gallery
+                );
+            }
+            
             # Sport
             $sport = array();
             

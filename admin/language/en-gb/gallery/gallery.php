@@ -1,7 +1,7 @@
 <?php
 
 // Heading
-$_['heading_title']     = 'Gallerys';
+$_['heading_title']     = 'Gallery';
 $_['heading_sub']       = 'Design';
 
 // Text
