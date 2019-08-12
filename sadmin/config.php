@@ -10,12 +10,12 @@ define('HTTPS_ADMIN', 'http://localhost/jolly/admin/');
 define('HTTPS_CATALOG', 'http://localhost/jolly/');
 
 # DIR
-define('DIR_APPLICATION', 'C:/ATDI/LMS/htdocs/jolly/sadmin/');
-define('DIR_SYSTEM', 'C:/ATDI/LMS/htdocs/jolly/system/');
-define('DIR_IMAGE', 'C:/ATDI/LMS/htdocs/jolly/image/');
+define('DIR_APPLICATION', 'C:/xampp/htdocs/jolly/sadmin/');
+define('DIR_SYSTEM', 'C:/xampp/htdocs/jolly/system/');
+define('DIR_IMAGE', 'C:/xampp/htdocs/jolly/image/');
 define('DIR_STORAGE', DIR_SYSTEM . 'storage/');
-define('DIR_CATALOG', 'C:/ATDI/LMS/htdocs/jolly/template/');
-define('DIR_ADMIN', 'C:/ATDI/LMS/htdocs/jolly/admin/');
+define('DIR_CATALOG', 'C:/xampp/htdocs/jolly/template/');
+define('DIR_ADMIN', 'C:/xampp/htdocs/jolly/admin/');
 define('DIR_LANGUAGE', DIR_APPLICATION . 'language/');
 define('DIR_TEMPLATE', DIR_APPLICATION . 'view/html/');
 define('DIR_CONFIG', DIR_SYSTEM . 'config/');

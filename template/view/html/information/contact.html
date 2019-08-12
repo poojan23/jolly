@@ -1,53 +1,236 @@
 <?php echo $header; ?>
 <?php echo $nav; ?>
-<div id="page-content-wrapper">
-    <div class="page-content">
-        <div class="container">
-           <div class="banner-img-08 banner-img-size"></div>
-            <div class="page-breadcum" id="content">
-                <?php for($i = 0; $i < count($breadcrumbs); $i++) : ?>
-                <?php if($i != (count($breadcrumbs) - 1)) : ?>
-                <?php if($i == 0) : ?>
-                <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
-                <?php else : ?>
-                <i class="fa fa-chevron-right"></i>
-                <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
-                <?php endif; ?>
-                <?php else : ?>
-                <i class="fa fa-chevron-right"></i>
-                <?php echo $breadcrumbs[$i]['text']; ?>
-                <?php endif; ?>
-                <?php endfor; ?>
-            </div>
-            <div class="about-desc-section">
-                <div class="about-desc-content">
-                    <div class="row">
-                        <div class="col-md-8 col-sm-6 col-xs-6 mt-20">
-                            <div class="col-md-12">
-                                <div class="page-title">
-                                     Reach Us
-                                </div>
-                                <div class="map">
-                                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d941.850579089346!2d72.85791582922248!3d19.221290399187804!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3be7b0d34cfb6a89%3A0xfee86b9c3a94f904!2sRajendra+Nagar+Post+Office!5e0!3m2!1sen!2sin!4v1499693115795" width="100%" height="300" frameborder="2" style="border:0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4 col-sm-6 col-xs-6 mt-20">
-                            <div class="about-page-content contact-info">
-                                <div class="contact">
-                                    <div class="page-title">
-                                     Connect Us
-                                    </div>
-                                    <ul>
-                                        <li><i class="fa fa-map-marker marker-fa"></i><?php echo $address;?></li>
-                                        <li><i class="fa fa-envelope con-fa"></i><a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></li>
-                                        <li><i class="fa fa-globe con-fa"></i><a href="<?php echo $website; ?>" target="_blank"><?php echo $website; ?></a></li>
-                                        <li><i class="fa fa-phone con-fa"></i><a href="mailto:<?php echo $telephone; ?>"><?php echo $telephone; ?></a></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
+    <!-- Title Section -->           
+        <section class="title-section">
+            <div class="container">
+                <!-- crumbs --> 
+                <div class="row crumbs">
+                   <div class="col-md-12">
+                        <?php for($i = 0; $i < count($breadcrumbs); $i++) : ?>
+                        <?php if($i != (count($breadcrumbs) - 1)) : ?>
+                        <?php if($i == 0) : ?>
+                        <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
+                        <?php else : ?>
+                        /
+                        <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
+                        <?php endif; ?>
+                        <?php else : ?>
+                        /
+                        <?php echo $breadcrumbs[$i]['text']; ?>
+                        <?php endif; ?>
+                        <?php endfor; ?>
+                   </div>
+                </div>
+                <!-- End crumbs --> 
+
+                <!-- Title - Search--> 
+                <div class="row title">
+                    <!-- Title --> 
+                    <div class="col-md-9">
+                        <h1>Contact Us
+                            <span class="subtitle-section">
+                                Email Us Now
+                                <span class="left"></span>
+                                <span class="right"></span>
+                            </span>
+                            <span class="line-title"></span>
+                        </h1>
                     </div>
+                    <!-- End Title--> 
+
+                    <!-- Search--> 
+                    <div class="col-md-3">
+                        <form class="search" action="#" method="Post">
+                            <div class="input-group">
+                                <input class="form-control" placeholder="Search..." name="email"  type="email" required="required">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-primary" type="submit" name="subscribe" >Go!</button>
+                                </span>
+                            </div>
+                        </form>  
+                    </div>
+                    <!-- End Search--> 
+                </div>
+                <!-- End Title -Search --> 
+              
+            </div>
+        </section>   
+        <!-- End Title Section --> 
+
+        <!-- Google Map --> 
+        <div id="map"></div>
+        <!-- End Google Map --> 
+
+        <!-- Contact Us -->
+        <section class="paddings">
+            <div class="container">
+                <div class="row">
+
+                    <!-- Sidebars -->
+                    <div class="col-md-4 sidebars">
+
+                        <aside>
+                            <h4>Reach Us</h4>
+                            <address>
+                              <strong>Ghatkopar Jolly Gymkhana</strong><br>
+                              <i class="fa fa-map-marker"></i><strong>Address: </strong> <?php echo $address;?><br>
+                              <i class="fa fa-phone"></i> <abbr title="Phone">P:</abbr> <?php echo $telephone; ?><br>
+                              <i class="fa fa-envelope"></i><strong>Email:</strong><a href="mailto:<?php echo $email; ?>"> <?php echo $email; ?></a><br>
+                              <i class="fa fa-envelope"></i><strong>Website</strong><a href="mailto:<?php echo $website; ?>"> <?php echo $website; ?></a>
+                            </address>
+                        </aside>
+
+                        <hr class="tall">
+
+                         <aside>
+                            <h4>Recent flickr</h4>
+                            <ul id="flickr-aside" class="thumbs"></ul>
+                        </aside>
+               
+                    </div>
+                    <!-- End Sidebars -->
+
+                    <!-- Content Right -->
+                    <div class="col-md-8">
+                        <h3>Contact Info</h3>
+                        <p class="lead">
+                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque rutrum pellentesque imperdiet. Nulla lacinia iaculis nulla non pulvinar. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.
+                        </p>
+
+                        <hr class="tall">
+                        
+                        <!-- Tabs -->
+                        <div class="tabs">
+                            <!-- Tab nav -->
+                            <ul class="nav nav-tabs">
+                                <li class="active"><a href="#contactUs" data-toggle="tab">
+                                    <i class="fa fa-envelope"></i> Contact Us</a>
+                                </li>
+                                <li class=""><a href="#support" data-toggle="tab">
+                                    <i class="fa fa-bullhorn"></i>Suport</a>
+                                </li>
+                            </ul>
+                            <!-- End Tab nav -->
+
+                            <!-- Tab Content -->
+                            <div class="tab-content">
+                                <!-- Tab item -->
+                                <div class="tab-pane active" id="contactUs">
+                                    
+                                    <h4>Contact Us</h4>
+
+                                    <!-- Form Contact -->
+                                    <form class="form-contact" action="php/send-mail-contact.php">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <label>Your name *</label>
+                                                    <input type="text"  required="required" value="" maxlength="100" class="form-control" name="Name" id="name">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Your email address *</label>
+                                                    <input type="email"  required="required" value="" maxlength="100" class="form-control" name="Email" id="email">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Comment *</label>
+                                                    <textarea maxlength="5000" rows="10" class="form-control" name="message"  style="height: 138px;" required="required" ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input type="submit" value="Send Message" class="btn btn-lg btn-primary">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- End Form Contact --> 
+                                    <div class="result"></div>
+                                </div>
+                                <!-- End Tab item -->
+
+                                <!-- Tab item -->
+                                <div class="tab-pane" id="support">
+                                    
+                                    <h4>Support</h4>
+
+                                    <!-- Form Contact -->
+                                    <form class="form-contact" action="php/send-mail-support.php">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <label>Your name *</label>
+                                                    <input type="text"  required="required" value="" maxlength="100" class="form-control" name="Name">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Your email address *</label>
+                                                    <input type="email"  required="required" value="" maxlength="100" class="form-control" name="Email">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-6">
+                                                    <label>Subject</label>
+                                                    <input type="text"  required="required" value="" class="form-control" name="Subject">
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <label>Phone</label>
+                                                    <input type="number"  required="required" value="" class="form-control" name="Phone">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Problem</label>
+                                                <select class="form-control" name="Problem">
+                                                  <option>Licence</option>
+                                                  <option>Network</option>
+                                                  <option>Software</option>                                                  
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-12">
+                                                    <label>Comment *</label>
+                                                    <textarea maxlength="5000" rows="10" class="form-control" name="message"  style="height: 138px;" required="required" ></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <input type="submit" value="Send Message" class="btn btn-lg btn-primary">
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <!-- End Form Contact --> 
+                                    <div class="result"></div>
+                                </div>
+                                <!-- End Tab item -->
+
+                            </div>
+                            <!-- End Tab Content -->
+                        </div>  
+                        <!-- End Tabs -->                     
+
+                    </div>
+                    <!-- End Content Right -->
+
+
                 </div>
             </div>
+            <!-- End Container-->
+        </section>
+        <!-- End Contact Us-->
+<!--<li><i class="fa fa-map-marker marker-fa"></i><?php echo $address;?></li>
+<li><i class="fa fa-envelope con-fa"></i><a href="mailto:<?php echo $email; ?>"><?php echo $email; ?></a></li>
+<li><i class="fa fa-globe con-fa"></i><a href="<?php echo $website; ?>" target="_blank"><?php echo $website; ?></a></li>
+<li><i class="fa fa-phone con-fa"></i><a href="mailto:<?php echo $telephone; ?>"><?php echo $telephone; ?></a></li>-->
 <?php echo $footer; ?>

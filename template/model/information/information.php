@@ -22,6 +22,13 @@ class ModelInformationInformation extends PT_Model {
 
         return $query->rows;
     }
+    
+    public function getInformations() {
+
+        $query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "information i LEFT JOIN " . DB_PREFIX . "information_description id ON (i.information_id = id.information_id) WHERE i.status = '1'");
+
+        return $query->rows;
+    }
 
     
 }

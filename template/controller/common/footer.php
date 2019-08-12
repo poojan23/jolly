@@ -17,7 +17,10 @@ class ControllerCommonFooter extends PT_Controller
         } else {
             $data['logo_colour'] = '';
         }
-
+        
+        $data['privacy_policy'] = $this->url->link('information/privacy_policy');
+        $data['sitemap'] = $this->url->link('information/sitemap');
+        
         $data['address'] = $this->config->get('config_address');
         $data['telephone'] = $this->config->get('config_telephone');
         $data['email'] = $this->config->get('config_email');

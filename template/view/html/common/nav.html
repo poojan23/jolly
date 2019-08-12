@@ -1,154 +1,187 @@
 <body>
-    <!---------------------->
-    <!--desktop menu-->
-    <header id="header" class="desktop-view">
-        <div class="container">
-            <div class="header-top">
-                <div class="logo-ir">
-                    <div class="col-md-6 col-sm-12 col-xs-12">
-                        <a href="https://www.rotary.org" target="_blank">
-                            <?php if(isset($logo)) : ?>
-                            <img class="img-responsive logo-img" src="<?php echo $logo; ?>" alt="<?php echo $name; ?>">
-                            <?php else : ?>
-                            <?php echo $name; ?>
-                            <?php endif; ?>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-sm-12 col-xs-12">
-                        <div class="header-logo-district">
-                            <a>
-                                <?php if(isset($district_logo)) : ?>
-                                <img class="img-responsive star-img" src="<?php echo $district_logo; ?>"
-                                    alt="<?php echo $name; ?>">
-                                <?php else : ?>
-                                <?php echo $name; ?>
-                                <?php endif; ?>
-                            </a>
-                            <a>
-                                <?php if(isset($governor_logo)) : ?>
-                                <img class="img-responsive user-img" src="<?php echo $governor_logo; ?>"
-                                    alt="<?php echo $name; ?>">
-                                <?php else : ?>
-                                <?php echo $name; ?>
-                                <?php endif; ?>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div id="layout" class="layout-wide">
+        <div class="preloader">
+            <div class="status">&nbsp;</div>
         </div>
-        <div class="container">
-            <div class="header-bottom">
-                <div class="menu-desk">
-                    <ul id="list-menu">
-                        <li>
-                            <a href="<?php echo $home; ?>"><?php echo $text_home; ?></a>
-                        </li>
-                        <?php foreach($information as $info) : ?>
-                        <li class="sub-menu-parent">
-                            <a href="<?php echo $info['href']; ?>"><?php echo $info['name']; ?></a>
-                            <?php if($info['children']) : ?>
-                            <ul class="sub-menu drop1">
-                                <?php foreach($info['children'] as $child): ?>
-                                <li><a href="<?php echo $child['href']; ?>"><?php echo $child['title']; ?></a></li>
-                                <?php endforeach; ?>
-                            </ul>
-                            <?php endif; ?>
-                        </li>
-                        <?php endforeach; ?>
-                        <li><a href="<?php echo $contact; ?>"><?php echo $text_contact; ?></a></li>
-                        <li class="sub-menu-parent">
-                            <a href="javascript:;"><?php echo $text_login; ?></a>
-                            <ul class="sub-menu drop8">
-                                <li><a href="<?php echo $admin; ?>"><i
-                                            class="fa fa-user-circle header-fa"></i>&nbsp;<?php echo $text_admin; ?></a>
-                                </li>
-                                <li><a href="<?php echo $club; ?>"><i
-                                            class="fa fa-user-circle header-fa"></i>&nbsp;<?php echo $text_club; ?></a>
-                                </li>
-                                <!-- <li><a href="https://my.rotary.org/en/user/login?destination=user/profile/edit"
-                                        target="_blank"><i
-                                            class="fa fa-user-circle header-fa"></i>&nbsp;<?php echo $text_member; ?></a>
-                                </li> -->
-                            </ul>
-                        </li>
-                        <li>
-                            <div class="search" id="search">
-                                <a href="javascript:;" class="top" title="" data-placement="bottom"
-                                    data-toggle="tooltip" data-original-title="Search">
-                                    <i class="fa fa-search header-fa" data-toggle="modal" data-target="#myModal"></i>
-                                </a>
+        <!-- Login Client -->
+        <div class="jBar">
+            <div class="container">
+                <div class="row padding-top-mini">
+                    <!-- Item service-->
+                    <div class="col-md-3">
+                        <div class="item-service border-right">
+                            <div class="row head-service">
+                                <div class="col-md-2">
+                                    <i class="fa fa-check-square"></i>
+                                </div>
+                                <div class="col-md-10">
+                                    <h5>Login or create new account.</h5>
+                                </div>
                             </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </header>
-    <!-- mobile menu -->
-    <header id="header" class="mobile-view">
-        <div class="container">
-            <div class="header-top">
-                <div class="logo-ir">
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <a href="https://www.rotary.org" target="_blank">
-                            <?php if(isset($logo)) : ?>
-                            <img class="img-responsive logo-img" src="<?php echo $logo; ?>" alt="<?php echo $name; ?>">
-                            <?php else : ?>
-                            <?php echo $name; ?>
-                            <?php endif; ?>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="header-logo-district">
-                            <a>
-                                <?php if(isset($district_logo)) : ?>
-                                <img class="img-responsive star-img" src="<?php echo $district_logo; ?>"
-                                    alt="<?php echo $name; ?>">
-                                <?php else : ?>
-                                <?php echo $name; ?>
-                                <?php endif; ?>
-                            </a>
-                            <a>
-                                <?php if(isset($governor_logo)) : ?>
-                                <img class="img-responsive user-img" src="<?php echo $governor_logo; ?>"
-                                    alt="<?php echo $name; ?>">
-                                <?php else : ?>
-                                <?php echo $name; ?>
-                                <?php endif; ?>
-                            </a>
+                            <p>Pellentesque habitant morbi fames ac turpis egestas. Vestibulum tortor quam. Pellentesque
+                                habitant</p>
                         </div>
                     </div>
+                    <!-- End Item service-->
+                    <!-- Login-->
+                    <div class="col-md-3">
+                        <h4>Client Login</h4>
+                        <form>
+                            <input type="email" placeholder="Username" required>
+                            <input type="password" placeholder="Password" required>
+                            <input type="submit" class="btn btn-primary" value="sign in">
+                            <span>Or</span>
+                            <input type="submit" class="btn btn-primary" value="Register">
+                        </form>
+                    </div>
+                    <!-- ENd Login-->
+                    <span class="jTrigger downarrow"><i class="fa fa-minus"></i></span>
                 </div>
             </div>
         </div>
-        <div class="container">
-            <div class="header-bottom">
-                <div class="menu-icon">
-                    <i class="fa fa-bars"></i>
-                    Menu
-                </div>
+        <span class="jRibbon jTrigger up" title="Login"><i class="fa fa-plus"></i></span>
+        <div class="line"></div>
+        <!-- End Login Client -->
+        <!-- Info Head -->
+        <!-- Info Head -->
+        <section class="info-head header-v3">
+            <div class="container">
                 <ul>
+                    <li><i class="fa fa-headphones"></i> 01800034567</li>
+                    <li><i class="fa fa-comment"></i> <a href="#">Live chat</a></li>
                     <li>
-                        <div class="search" id="search">
-                            <a href="javascript:;" class="top" data-placement="bottom" data-toggle="tooltip"
-                                data-original-title="Search">
-                                <i class="fa fa-search header-fa" data-toggle="modal" data-target="#myModal"></i>
-                            </a>
-                        </div>
+                        <ul>
+                            <li class="dropdown">
+                                <i class="fa fa-globe"></i>
+                                <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    Language<i class="fa fa-angle-down"></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#"><img src="template/view/dist/img/language/spanish.png"
+                                                alt="">Spanish</a></li>
+                                    <li><a href="#"><img src="template/view/dist/img/language/english.png"
+                                                alt="">English</a></li>
+                                    <li><a href="#"><img src="template/view/dist/img/language/frances.png"
+                                                alt="">Frances</a></li>
+                                    <li><a href="#"><img src="template/view/dist/img/language/portugues.png"
+                                                alt="">Portuguese</a></li>
+                                </ul>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
-        </div>
-        <nav class="nav open">
-            <ul>
-                <li><a href="<?php echo $home; ?>"><?php echo $text_home; ?></a></li>
-                <?php foreach($information as $info) : ?>
-                <li><a href="<?php echo $info['href']; ?>"><?php echo $info['name']; ?></a></li>
-                <?php endforeach; ?>
-                <li><a href="<?php echo $contact; ?>"><?php echo $text_contact; ?></a></li>
-                <li><a href="<?php echo $admin; ?>"><?php echo $text_admin; ?></a></li>
-                <li><a href="<?php echo $club; ?>"><?php echo $text_club; ?></a></li>
-            </ul>
-        </nav>
-    </header>
+        </section>
+        <!-- Info Head -->
+        <!-- Header-->
+        <header>
+            <!-- Container-->
+            <div class="container">
+                <!-- Row-->
+                <div class="row">
+                    <!-- Logo-->
+                    <div class="col-md-2">
+                        <div class="logo">
+                            <?php if(isset($logo)) : ?>
+                            <a href="<?php echo $home; ?>" title="Return Home">
+                                <img src="<?php echo $logo; ?>" alt="<?php echo $name; ?>" class="logo_img">
+                            </a>
+                            <?php else : ?>
+                            <?php echo $name; ?>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+                    <!-- End Logo-->
+
+                    <!-- Nav-->
+                    <nav class="col-md-10">
+                        <!-- Menu-->
+                        <ul id="menu" class="sf-menu">
+                            <li>
+                                <a href="<?php echo $home; ?>">HOME</a>
+                            </li>
+                            <li><a href="javascript:;">ABOUT US<i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $profile; ?>">Profile</a></li>
+                                    <li><a href="<?php echo $vision_mission; ?>">vision/Mission</a></li>
+                                    <li><a href="<?php echo $office_bearers; ?>">Office Bearers</a></li>
+                                    <li><a href="<?php echo $board_of_trustees; ?>">Board Of Trustees</a></li>
+                                    <li><a href="<?php echo $managing_committee; ?>">Managing committee</a></li>
+                                    <li><a href="<?php echo $staff; ?>">Staff</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Membership <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $definition; ?>">Definition</a></li>
+                                    <li><a href="<?php echo $transfer_withdrawal; ?>">Transfer / Withdrawal</a></li>
+                                    <li><a href="<?php echo $enlistment_of_Members; ?>">Enlistment of Members</a></li>
+                                    <li><a href="<?php echo $membership_fees; ?>">Membership Fees</a></li>
+                                    <li><a href="<?php echo $membership_sub_committee; ?>">Membership Sub-Committee</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Sports <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $badminton; ?>">Badminton</a></li>
+                                    <li><a href="<?php echo $long_tennis_skating_volley_ball; ?>">Long Tennis / Skating
+                                            & Volley Ball</a></li>
+                                    <li><a href="<?php echo $squash; ?>">Squash</a></li>
+                                    <li><a href="<?php echo $billiards; ?>">Billiards</a></li>
+                                    <li><a href="<?php echo $table_tennis; ?>">Table Tennis</a></li>
+                                    <li><a href="<?php echo $chess_carrom; ?>">Chess & Carrom</a></li>
+                                    <li><a href="<?php echo $cricket; ?>">Cricket</a></li>
+                                </ul>
+                            </li>
+
+                            <li><a href="#">Activites <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $swimming_pool; ?>">Swimming Pool</a></li>
+                                    <li><a href="<?php echo $health_club; ?>">Health Club</a></li>
+                                    <li><a href="<?php echo $gymnasium; ?>">Gymnasium</a></li>
+                                    <li><a href="<?php echo $yoga; ?>">Yoga</a></li>
+                                    <li><a href="<?php echo $marathon_fitness_training; ?>">Marathon / Fitness
+                                            Training</a></li>
+                                    <li><a href="<?php echo $ex_youth_wing; ?>">Ex. Youth Wing</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Facilities <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $restaurant_bar_fast_food; ?>">Restaurant, Bar &amp; FastFood</a></li>
+                                    <li><a href="<?php echo $card_room; ?>">Card Room</a></li>
+                                    <li><a href="<?php echo $bulletin_website_affiliation_sub_committee; ?>">Bulletin, Website & Affiliation Sub-Committee</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Venues &amp; Guest room <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $jasmine_basement_banquet_hall; ?>">Jasmine Basement Banquet
+                                            Hall</a></li>
+                                    <li><a href="<?php echo $lilac_banquet_hall; ?>">Lilac Banquet Hall</a></li>
+                                    <li><a href="<?php echo $terrace_1st_floor; ?>">Terrace - 1st floor</a></li>
+                                    <li><a href="<?php echo $lantana_banquet_hall; ?>">Lantana Banquet Hall</a></li>
+                                    <li><a href="<?php echo $olive_party_hall; ?>">Olive Party Hall</a></li>
+                                    <li><a href="<?php echo $members_guest_room; ?>">Members Guest Room</a></li>
+                                    <li><a href="<?php echo $caterers_decorators; ?>">Caterers / Decorators</a></li>
+                                    <li><a href="<?php echo $venue_sub_committee; ?>">Venue Sub Committee</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="<?php echo $gallery; ?>">Gallery</a></li>
+                            <li><a href="#">Events <i class="fa fa-angle-down"></i></a>
+                                <ul>
+                                    <li><a href="<?php echo $cultural_events; ?>">Cultural Events</a></li>
+                                    <li><a href="<?php echo $education_events; ?>">Education Events</a></li>
+                                    <li><a href="<?php echo $entertainment_events; ?>">Entertainment Events</a></li>
+                                    <li><a href="<?php echo $sports_events; ?>">Sports Events</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="<?php echo $media; ?>">Media</a></li>
+                            <li><a href="<?php echo $contact; ?>">Contact Us</a></li>
+                        </ul>
+                        <!-- End Menu-->
+                    </nav>
+                    <!-- End Nav-->
+                </div>
+                <!-- End Row-->
+            </div>
+            <!-- End Container-->
+        </header>
+        <!-- End Header-->

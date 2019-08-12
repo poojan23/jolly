@@ -1,63 +1,73 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="<?php echo $lang; ?>" dir="<?php echo $direction; ?>">
-
-<head>
-
-    <!--=========================*
-                Met Data
-    *===========================-->
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <?php if($description) : ?>
-    <meta name="description" content="<?php echo $description; ?>">
-    <?php endif; ?>
-    <?php if($keywords) : ?>
-    <meta name="keywords" content="<?php echo $keywords; ?>">
-    <?php endif; ?>
-
-
-    <!--=========================*
-              Page Title
-    *===========================-->
-    <title><?php echo $title; ?></title>
-    <!-- <base href="<?php echo $base; ?>" /> -->
-
-    <!--=========================*
-                Favicon
-    *===========================-->
-    <link rel="shortcut icon" type="image/x-icon" href="<?php echo $icon; ?>">
-
-    <!--=========================*
-            Bootstrap Css
-    *===========================-->
-    <link href="template/view/dist/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css">
-    <link href="template/view/dist/bootstrap/css/bootstrap.css" rel="stylesheet" type="text/css">
-
-    <!--=========================*
-              Custom CSS
-    *===========================-->
-    <link href="template/view/dist/css/style.css" rel="stylesheet" type="text/css">
-    <!-- <link href="template/view/dist/css/375-media.css" rel="stylesheet" type="text/css"> -->
-    <link href="template/view/dist/css/responsive.css" rel="stylesheet" type="text/css">
-    <!--=========================*
-               Owl CSS
-    *===========================-->
-    <link rel="stylesheet" type="text/css" href="template/view/dist/plugins/owl.carousel/assets/owl.carousel.css" />
-    <link rel="stylesheet" type="text/css"
-        href="template/view/dist/plugins/owl.carousel/assets/owl.theme.default.css" />
-    <link rel="stylesheet" type="text/css" href="template/view/dist/plugins/owl.carousel/assets/owl.theme.green.css" />
-
-    <!--=========================*
-               Font icon
-    *===========================-->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/ionicons/2.0.1/css/ionicons.min.css" rel="stylesheet" />
-
-
-    <!--=========================*
-              datatable CSS
-    *===========================-->
-    <link href="template/view/dist/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet" />
-    <link href="template/view/dist/plugins/bootstrap-wysihtml5/bootstrap3-wysihtml5.min.css" rel="stylesheet" />
-
-</head>
+    <head>
+        <meta charset="utf-8">
+        <?php if($description) : ?>
+        <meta name="description" content="<?php echo $description; ?>">
+        <?php endif; ?>
+        <?php if($keywords) : ?>
+        <meta name="keywords" content="<?php echo $keywords; ?>">
+        <?php endif; ?>
+        <title><?php echo $title; ?></title>
+        <meta name="author" content="iwthemes.com">   
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="template/view/dist/css/style.css"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="template/view/dist/css/theme-responsive.css"/>
+        <link type="text/css" media="screen" rel="stylesheet" href="#" class="skin_color"/>
+        <script src="template/view/dist/js/modernizr.js"></script>
+        <link rel="shortcut icon" href="<?php echo $icon; ?>">
+        <link rel="apple-touch-icon" href="template/view/dist/img/icons/apple-touch-icon.png">
+        <link rel="apple-touch-icon" sizes="72x72" href="template/view/dist/img/icons/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="template/view/dist/img/icons/apple-touch-icon-114x114.png">
+        <style>
+            .mt-0{
+                margin-top:0 !important;
+            }
+            .sf-menu > li > a {
+                text-decoration: none;
+                display: block;
+                font-size: 12px;
+                font-weight: 300;
+                color: #131313;
+                text-transform: uppercase;
+            }
+            .sf-menu > li {
+                position: relative;
+                display: inline-block;
+                list-style: none;
+                line-height: 20px;
+                margin: 0 14px 0 0;
+            }
+             header {
+                background-color: #fff;
+                padding: 5px 0;
+                left: 0;
+                width: 100%;
+                z-index: 3;
+                position: relative;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+                -webkit-transition: 0.3s all ease;
+                -moz-transition: 0.3s all ease;
+                -o-transition: 0.3s all ease;
+                -ms-transition: 0.3s all ease;
+                transition: 0.3s all ease;
+            }
+             .logo img {
+                max-width: 100%;
+                height: 65px;
+            }
+            .sf-menu {
+                margin: 0;
+                float: right;
+                padding-top: 20px;
+            }
+            .head-service h4 a{
+                color:#333;
+                text-decoration: none;
+            }
+            .coopring a {
+                color: #ddd;
+                text-decoration: none;
+            }
+        </style>
+    </head>

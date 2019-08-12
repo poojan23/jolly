@@ -1,0 +1,96 @@
+<?php echo $header; ?>
+<?php echo $nav; ?>
+<style>
+    .staff .item-work .info-work {
+    font-size: 14px;
+    padding: 10px 5px;
+    background: #fff;
+    border: solid 1px #cdcdcd;
+    text-align: center;
+    margin-bottom:16px;
+}
+</style>
+<section class="title-section">
+    <div class="container">
+        <div class="row crumbs">
+            <div class="col-md-12">
+                <?php for($i = 0; $i < count($breadcrumbs); $i++) : ?>
+                <?php if($i != (count($breadcrumbs) - 1)) : ?>
+                <?php if($i == 0) : ?>
+                <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
+                <?php else : ?>
+                /
+                <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
+                <?php endif; ?>
+                <?php else : ?>
+                /
+                <?php echo $breadcrumbs[$i]['text']; ?>
+                <?php endif; ?>
+                <?php endfor; ?>
+            </div>
+        </div>
+        <div class="row title">
+            <div class="col-md-9">
+                <h1>Gallery
+                    <span class="subtitle-section">
+                        Jolly Gymkhana
+                        <span class="left"></span>
+                        <span class="right"></span>
+                    </span>
+                    <span class="line-title"></span>
+                </h1>
+            </div>
+            <div class="col-md-3">
+                <form class="search" action="#" method="Post">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Search..." name="search"  type="text" required="required">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" name="subscribe" >Go!</button>
+                        </span>
+                    </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content_info">
+    <div class="paddings">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                   <h3>Gallery</h3>
+                <div class="portfolioFilter">
+                    <a href="#" data-filter="*" class="current">Show All</a>
+                     <?php foreach($gallery_group as $gallery):?>
+                     <a href="#<?php echo $gallery['name']; ?>" data-filter=".<?php echo $gallery['name']; ?>"><?php echo $gallery['name']; ?></a>
+                    <?php endforeach;?>
+                </div>
+                <div class="works portfolioContainer">
+                    <!--box 1-->
+                   
+                    <!--<?php foreach($gallery_group as $gallery):?>-->
+                    <div class="col-md-3 desing">
+                        <div class="item-work">
+                            <div class="hover">
+                                <img src="template/view/dist/img/works/1.jpg" alt=""/>                               
+                                 <a href="template/view/dist/img/works/1.jpg" class="fancybox" title="#"><div class="overlay"></div></a>
+                            </div>                                   
+                            <div class="info-work">
+                                <h4>Jekas Responsive Page</h4>
+                                <p>Pellentesque habitant morbi tristique.</p>
+                                <div class="icons-work">
+                                    <i class="fa fa-tablet" data-toggle="tooltip" title data-original-title="Responsive Desing"></i>
+                                    <i class="fa fa-desktop" data-toggle="tooltip" title data-original-title="Retina Display"></i>
+                                </div>
+                            </div>  
+                        </div>
+                    </div> 
+                    <!--<?php endforeach;?>-->
+                    <!--end box 1-->
+                </div>   
+                </div>
+            </div>
+        </div>
+        </div>
+</section>
+<?php echo $footer; ?>

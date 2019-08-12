@@ -317,10 +317,6 @@ class ControllerCatalogInformation extends PT_Controller {
                 $this->error['title'][$language_id] = $this->language->get('error_title');
             }
 
-            if ((utf8_strlen($value['description']) < 1) || (utf8_strlen($value['description']) > 64)) {
-                $this->error['description'][$language_id] = $this->language->get('error_description');
-            }
-
             if ((utf8_strlen($value['meta_title']) < 1) || (utf8_strlen($value['meta_title']) > 255)) {
                 $this->error['meta_title'][$language_id] = $this->language->get('error_meta_title');
             }

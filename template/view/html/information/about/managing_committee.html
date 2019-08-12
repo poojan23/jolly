@@ -1,0 +1,93 @@
+<?php echo $header; ?>
+<?php echo $nav; ?>
+<style>
+    .item-work{
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 30px;
+    }
+</style>
+<section class="title-section">
+    <div class="container">
+        <div class="row crumbs">
+            <div class="col-md-12">
+                <?php for($i = 0; $i < count($breadcrumbs); $i++) : ?>
+                <?php if($i != (count($breadcrumbs) - 1)) : ?>
+                <?php if($i == 0) : ?>
+                <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
+                <?php else : ?>
+                /
+                <a href="<?php echo $breadcrumbs[$i]['href']; ?>"><?php echo $breadcrumbs[$i]['text']; ?></a>
+                <?php endif; ?>
+                <?php else : ?>
+                /
+                <?php echo $breadcrumbs[$i]['text']; ?>
+                <?php endif; ?>
+                <?php endfor; ?>
+            </div>
+        </div>
+        <div class="row title">
+            <div class="col-md-9">
+                <h1><?php foreach($information_info as $info): ?>
+                    <?php echo $info['name']; ?>
+                    <?php endforeach; ?>
+                    <span class="subtitle-section">
+                        Jolly Gymkhana
+                        <span class="left"></span>
+                        <span class="right"></span>
+                    </span>
+                    <span class="line-title"></span>
+                </h1>
+            </div>
+            <div class="col-md-3">
+                <form class="search" action="#" method="Post">
+                    <div class="input-group">
+                        <input class="form-control" placeholder="Search..." name="search"  type="text" required="required">
+                        <span class="input-group-btn">
+                            <button class="btn btn-primary" type="submit" name="subscribe" >Go!</button>
+                        </span>
+                    </div>
+                </form>  
+            </div>
+        </div>
+    </div>
+</section>
+<section class="content_info">
+    <div class="paddings">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3>
+                    <?php foreach($information_info as $info): ?>
+                    <?php echo $info['name']; ?>
+                    <?php endforeach; ?>
+                    </h3>
+                    <?php foreach($information_info as $info): ?>
+                    <?php echo $info['description']; ?>
+                    <?php endforeach; ?>
+                    <?php if($sliders) : ?>
+                    <?php foreach($sliders as $slider) : ?>
+                    <div class="col-md-4">
+                        <div class="item-work">
+                            <div class="hover">
+                                <img src="image/<?php echo $slider['image']; ?>" alt="">                               
+                                 <a href="image/<?php echo $slider['image']; ?>" class="fancybox" title="<?php echo $slider['title']; ?>"><div class="overlay"></div></a>
+                            </div>                                   
+                            <div class="info-work">
+                                <h4><?php echo $slider['title']; ?></h4>
+                                <p></p>
+                                <div class="icons-work">
+                                    <i class="fa fa-tablet" data-toggle="tooltip" title="" data-original-title="Responsive Desing"></i>
+                                    <i class="fa fa-desktop" data-toggle="tooltip" title="" data-original-title="Retina Display"></i>
+                                </div>
+                            </div>  
+                        </div>
+                    </div>
+                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<?php echo $footer; ?>

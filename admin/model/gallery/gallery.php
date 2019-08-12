@@ -3,7 +3,7 @@
 class ModelGalleryGallery extends PT_Model
 {
     public function addGallery($data) {
-        $this->db->query("INSERT INTO " . DB_PREFIX . "gallery SET name = '" . $this->db->escape($data['name']) . "', status = '" . (int)$data['status'] . "'");
+        $this->db->query("INSERT INTO " . DB_PREFIX . "gallery SET gallery_group_id = '" . (int)$data['gallery_group_id'] . "',name = '" . $this->db->escape($data['name']) . "', status = '" . (int)$data['status'] . "'");
 
         $gallery_id = $this->db->lastInsertId();
 
